@@ -1,6 +1,6 @@
 # HitKey
 
-QWERTY 키보드 기준 영문 타이핑 훈련 웹앱. 입력창 없이 `keydown`만으로 플레이한다.
+QWERTY 키보드 기준 영문 타이핑 훈련 웹앱
 
 ## 개요
 
@@ -9,8 +9,3 @@ QWERTY 키보드 기준 영문 타이핑 훈련 웹앱. 입력창 없이 `keydow
 - 판정(PERFECT · GOOD · OK · MISS)과 집중 게이지로 세션 진행
 - 약점 키 하이라이트, 효과음·시각효과·폰트 설정 (브라우저에 저장)
 
-## 배포
-
-1. `main` push → Actions가 `gh-pages` 브랜치에 배포
-2. [Settings → Pages](https://github.com/noelfania/hitKey/settings/pages): Source **Deploy from a branch**, Branch **`gh-pages`**, Folder **`/ (root)`**
-3. https://noelfania.github.io/hitKey/

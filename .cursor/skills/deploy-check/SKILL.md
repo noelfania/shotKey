@@ -35,7 +35,7 @@ description: GitHub Pages 배포 전 점검 흐름을 프로젝트 배포 문서
 - `npm run build`가 성공하는가
 - `vite.config.ts`의 `base`가 `/hitKey/`인가
 - `.github/workflows/pages.yml`이 `main` push와 `workflow_dispatch`를 트리거하는가
-- GitHub Pages Source가 `gh-pages` / root로 설정되어 있는가
+- GitHub Pages Source가 **GitHub Actions**로 설정되어 있는가
 
 ## 출력 형식
 

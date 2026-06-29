@@ -21,7 +21,7 @@ GitHub Pages 배포 전 점검을 반복 실행하기 위한 커맨드.
 - Vite `base`가 `/hitKey/`인지
 - `npm run lint`
 - `npm run build`
-- `.github/workflows/pages.yml` 트리거와 `gh-pages` publish 경로
+- `.github/workflows/pages.yml` 트리거와 artifact 경로(`dist`)
 
 4. 실행 가능한 검증과 아직 확인하지 못한 항목을 구분해 적는다.
 
