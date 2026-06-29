@@ -75,6 +75,6 @@ alwaysApply: true
 
 ## [배포](deploy_github_pages)
 - 본 프로젝트는 DB가 없는 프론트엔드만 있는 프로젝트이기 때문에 GitHub Pages로 정적 호스팅한다.
-- `main` 브랜치 push 시 GitHub Actions(`.github/workflows/deploy.yml`)가 빌드 후 배포한다.
+- `main` 브랜치 push 시 GitHub Actions가 빌드 후 `gh-pages` 브랜치에 배포한다.
 - Vite `base`는 저장소명(`/hitKey/`)과 일치해야 한다.
 - 배포 절차는 `.cursor/rules/deploy_github_pages.md`를 따른다.

@@ -13,13 +13,13 @@ description: GitHub Pages 배포 전 점검 흐름을 프로젝트 배포 문서
 
 - `.cursor/rules/deploy_github_pages.md`
 - `package.json`
-- `.github/workflows/deploy.yml`
+- `.github/workflows/pages.yml`
 - `vite.config.ts`
 
 ## 주로 쓰는 상황
 
 - `vite.config.ts`의 `base` 경로를 수정했을 때
-- `.github/workflows/deploy.yml`을 변경했을 때
+- `.github/workflows/pages.yml`을 변경했을 때
 - GitHub Pages 배포 절차 문서와 실제 코드가 맞는지 확인하고 싶을 때
 
 ## 작업 순서
@@ -34,8 +34,8 @@ description: GitHub Pages 배포 전 점검 흐름을 프로젝트 배포 문서
 - `npm run lint` 기준이 여전히 유효한가
 - `npm run build`가 성공하는가
 - `vite.config.ts`의 `base`가 `/hitKey/`인가
-- `.github/workflows/deploy.yml`이 `main` push와 `workflow_dispatch`를 트리거하는가
-- GitHub Pages Source가 GitHub Actions로 설정되어 있는가
+- `.github/workflows/pages.yml`이 `main` push와 `workflow_dispatch`를 트리거하는가
+- GitHub Pages Source가 `gh-pages` / root로 설정되어 있는가
 
 ## 출력 형식
 
