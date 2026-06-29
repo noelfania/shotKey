@@ -1,0 +1,1322 @@
+/* 전체 화면을 사이드바와 게임 스테이지 2열로 나누는 최상위 레이아웃 */
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: clamp(18px, 2vw, 28px);
+  gap: clamp(18px, 1.6vw, 24px);
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.top-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* 패널형 UI가 공통으로 사용하는 외곽선과 그림자 */
+.score-card,
+.gauge-panel,
+.challenge-card,
+.keyboard-panel,
+.restart-button,
+.hand-card,
+.game-stage-footer {
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--panel-shadow);
+}
+
+/* 좌측 사이드바 영역: 모드 선택과 HUD를 세로로 쌓는다 */
+.score-card,
+.gauge-panel,
+.hand-card,
+.keyboard-panel,
+.game-stage-footer {
+  background: var(--panel-bg);
+  backdrop-filter: blur(18px);
+}
+
+.section-label,
+.score-label,
+.keyboard-meta-label {
+  margin: 0 0 6px;
+  color: var(--muted-text);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hand-badge,
+.hand-mini-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mode-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.assist-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.assist-toggle {
+  padding: 9px 14px;
+  border: 1px solid rgba(139, 233, 253, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--strong-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.assist-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(139, 233, 253, 0.44);
+}
+
+.assist-toggle.is-active {
+  border-color: rgba(109, 247, 193, 0.54);
+  background: rgba(109, 247, 193, 0.14);
+}
+
+.assist-copy {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.mode-button {
+  padding: 10px 12px;
+  border: 1px solid rgba(139, 233, 253, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.mode-button:hover {
+  transform: translateY(-1px);
+  color: var(--strong-text);
+  border-color: rgba(139, 233, 253, 0.44);
+}
+
+.mode-button.is-active {
+  color: #06101f;
+  background: linear-gradient(135deg, #8be9fd, #6df7c1);
+  border-color: transparent;
+}
+
+.mode-button:focus-visible,
+.restart-button:focus-visible,
+.assist-toggle:focus-visible,
+.keyboard-setting-button:focus-visible {
+  outline: 2px solid rgba(139, 233, 253, 0.82);
+  outline-offset: 3px;
+}
+
+/* HUD 영역: 점수 카드, 손 통계, 게이지를 한 묶음으로 관리한다 */
+.hud {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.hud-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.score-card,
+.hand-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 20px;
+}
+
+.score-card strong {
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  color: var(--strong-text);
+}
+
+.hand-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.hand-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--strong-text);
+}
+
+.hand-mini-badge,
+.hand-badge {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hand-mini-badge {
+  min-width: 40px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.hand-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.hand-card-metrics div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hand-card-metrics dt {
+  color: var(--muted-text);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hand-card-metrics dd {
+  margin: 0;
+  color: var(--strong-text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.hand-mini-badge-left,
+.hand-badge-left {
+  background: rgba(139, 233, 253, 0.16);
+  color: #8be9fd;
+}
+
+.hand-mini-badge-right,
+.hand-badge-right {
+  background: rgba(255, 209, 102, 0.16);
+  color: #ffd166;
+}
+
+.hand-card-left {
+  border-color: rgba(139, 233, 253, 0.22);
+}
+
+.hand-card-right {
+  border-color: rgba(255, 209, 102, 0.22);
+}
+
+.gauge-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 22px;
+}
+
+.gauge-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--strong-text);
+}
+
+.gauge-copy span {
+  color: var(--muted-text);
+  font-size: 13px;
+}
+
+.gauge-copy strong {
+  font-size: 22px;
+}
+
+.gauge-track {
+  width: 100%;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--track-bg);
+}
+
+.gauge-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--gauge-fill-start, #ff6b6b) 0%,
+    var(--gauge-fill-end, #6df7c1) 100%
+  );
+  box-shadow: 0 0 24px var(--gauge-fill-shadow, rgba(109, 247, 193, 0.35));
+  transition: width 140ms linear;
+}
+
+.game-stage-gauge {
+  width: 100%;
+}
+
+.gauge-track-slim {
+  height: 1px;
+}
+
+/* 우측 게임 스테이지: 판정, 문제 카드, 키보드, 하단 안내를 세로로 배치한다 */
+.game-stage {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  gap: 16px;
+}
+
+.game-stage-main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  min-height: 0;
+}
+
+.feedback {
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 220px;
+  flex-wrap: wrap;
+}
+
+.feedback-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.feedback-label {
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.feedback-ready {
+  color: #8be9fd;
+}
+
+.feedback-perfect {
+  color: #6df7c1;
+}
+
+.feedback-good {
+  color: #9ad1ff;
+}
+
+.feedback-ok {
+  color: #ffd166;
+}
+
+.feedback-miss,
+.feedback-gameover {
+  color: #ff7b7b;
+}
+
+.feedback-timeout {
+  color: #ffb86c;
+}
+
+.feedback-detail {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.feedback-detail-accent {
+  font-weight: 700;
+}
+
+.feedback-detail-accent-miss,
+.feedback-detail-accent-gameover {
+  color: #ff7b7b;
+}
+
+.feedback-detail-accent-timeout {
+  color: #ffb86c;
+}
+
+.challenge-meta {
+  position: absolute;
+  top: clamp(16px, 1.8vw, 22px);
+  left: clamp(18px, 2vw, 26px);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: min(46%, 480px);
+  color: var(--muted-text);
+}
+
+.challenge-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.challenge-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.challenge-meta-item-long {
+  align-items: flex-start;
+}
+
+.challenge-meta-group-title {
+  margin-top: 2px;
+  color: var(--strong-text);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.challenge-meta-group-title:first-child {
+  margin-top: 0;
+}
+
+.challenge-meta-key {
+  color: var(--muted-text);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.challenge-meta-item strong {
+  color: var(--strong-text);
+  font-size: 7px;
+  font-weight: 700;
+  white-space: normal;
+  line-height: 1.05;
+}
+
+.challenge-meta-sample {
+  font-size: 6px;
+  font-weight: 500;
+  color: var(--muted-text);
+}
+
+/* 현재 문자 카드와 다음 문자 미리보기의 중심 정렬을 담당한다 */
+.challenge-card {
+  width: 100%;
+  min-height: clamp(180px, 24vh, 260px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 14px;
+  padding: clamp(18px, 2vw, 26px);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 52%),
+    linear-gradient(180deg, rgba(14, 14, 14, 0.94), rgba(4, 4, 4, 0.98));
+  color: var(--strong-text);
+  user-select: none;
+  overflow: hidden;
+}
+
+.challenge-card-main {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-bottom: 2px;
+}
+
+/* MISS 잠금 오버레이는 카드 전체를 덮어 입력 불가 상태를 즉시 드러낸다 */
+.challenge-lock-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(18px, 3vw, 34px);
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 31, 77, 0.2),
+      rgba(255, 31, 77, 0.02) 16%,
+      rgba(255, 31, 77, 0.02) 84%,
+      rgba(255, 31, 77, 0.2)
+    ),
+    radial-gradient(circle at center, rgba(255, 142, 36, 0.16), transparent 48%),
+    rgba(3, 0, 0, 0.62);
+  backdrop-filter: blur(2px) saturate(1.28);
+}
+
+.challenge-lock-overlay::before,
+.challenge-lock-overlay::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(24px, 4vw, 44px);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 181, 39, 0.9) 0 26px,
+      rgba(40, 18, 0, 0.84) 26px 52px
+    );
+  opacity: 0.78;
+  box-shadow:
+    0 0 22px rgba(255, 31, 77, 0.54),
+    inset 0 0 18px rgba(255, 106, 0, 0.28);
+}
+
+.challenge-lock-overlay::before {
+  top: 0;
+  border-bottom: 2px solid rgba(255, 31, 77, 0.88);
+}
+
+.challenge-lock-overlay::after {
+  bottom: 0;
+  border-top: 2px solid rgba(255, 31, 77, 0.88);
+}
+
+.challenge-lock-panel {
+  position: relative;
+  width: min(88%, 680px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: clamp(16px, 2.5vw, 26px) clamp(18px, 3vw, 34px);
+  border-top: 2px solid rgba(255, 31, 77, 0.88);
+  border-bottom: 2px solid rgba(255, 31, 77, 0.88);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.62)),
+    linear-gradient(90deg, transparent, rgba(255, 91, 0, 0.12), transparent);
+  box-shadow:
+    0 0 34px rgba(255, 31, 77, 0.34),
+    inset 0 0 38px rgba(255, 114, 0, 0.12);
+  text-align: center;
+}
+
+.challenge-lock-panel::before,
+.challenge-lock-panel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 78, 66, 0.9);
+  box-shadow: 0 0 18px rgba(255, 31, 77, 0.86);
+}
+
+.challenge-lock-panel::before {
+  top: -8px;
+}
+
+.challenge-lock-panel::after {
+  bottom: -8px;
+}
+
+.challenge-lock-condition,
+.challenge-lock-detail {
+  color: rgba(255, 149, 48, 0.86);
+  font-family: var(--typing-display-font);
+  font-size: clamp(0.78rem, 1.8vw, 1.18rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 12px rgba(255, 103, 0, 0.72);
+}
+
+.challenge-lock-title {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.18em;
+  color: #ff9d2e;
+  font-family: var(--typing-display-font);
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 0.92;
+  text-shadow:
+    0 0 10px rgba(255, 157, 46, 0.8),
+    0 0 28px rgba(255, 86, 0, 0.78),
+    0 0 46px rgba(255, 31, 77, 0.52);
+}
+
+.challenge-lock-time {
+  display: inline-block;
+  width: 6ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.challenge-lock-detail {
+  color: rgba(255, 126, 36, 0.78);
+  font-size: clamp(0.74rem, 1.5vw, 1rem);
+}
+
+/* 카드 흔들림: MISS의 즉각적인 실패 감각을 준다 */
+@keyframes challengeCardShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-3px);
+  }
+
+  50% {
+    transform: translateX(3px);
+  }
+
+  75% {
+    transform: translateX(-2px);
+  }
+}
+
+/* 카드 플래시: 일반 정답의 짧은 강조 효과 */
+@keyframes challengeCardFlash {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+    box-shadow: inset 0 0 0 rgba(139, 233, 253, 0), 0 0 0 rgba(139, 233, 253, 0);
+  }
+
+  50% {
+    transform: scale(1.012);
+    filter: brightness(1.1);
+    box-shadow:
+      inset 0 0 24px rgba(139, 233, 253, 0.16),
+      0 0 28px rgba(139, 233, 253, 0.18);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+    box-shadow: inset 0 0 0 rgba(139, 233, 253, 0), 0 0 0 rgba(139, 233, 253, 0);
+  }
+}
+
+/* 카드 퍼펙트: PERFECT 판정의 더 큰 반응 효과 */
+@keyframes challengeCardPerfect {
+  0% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+    box-shadow: inset 0 0 0 rgba(139, 233, 253, 0), 0 0 0 rgba(139, 233, 253, 0);
+  }
+
+  45% {
+    transform: translateY(-8px) scale(1.025);
+    filter: brightness(1.22);
+    box-shadow:
+      inset 0 0 42px rgba(139, 233, 253, 0.2),
+      0 0 52px rgba(139, 233, 253, 0.34);
+  }
+
+  70% {
+    transform: translateY(-3px) scale(1.012);
+    filter: brightness(1.1);
+    box-shadow:
+      inset 0 0 24px rgba(139, 233, 253, 0.14),
+      0 0 28px rgba(139, 233, 253, 0.18);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+    box-shadow: inset 0 0 0 rgba(139, 233, 253, 0), 0 0 0 rgba(139, 233, 253, 0);
+  }
+}
+
+/* 현재 문자는 중앙, 미리보기는 우측에 두어 시선 흐름을 고정한다 */
+.challenge-line {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  justify-items: center;
+}
+
+.challenge-current {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+  grid-column: 2;
+}
+
+.challenge-focus {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: max-content;
+  padding: 0 6px;
+}
+
+.challenge-focus::before,
+.challenge-focus::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: clamp(84px, 10vw, 128px);
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+  box-shadow: 1px 0 0 rgba(7, 10, 16, 0.28);
+}
+
+.challenge-focus::before {
+  left: -40px;
+}
+
+.challenge-focus::after {
+  right: -40px;
+}
+
+.challenge-character,
+.challenge-upcoming-character,
+.keycap-shift-label,
+.keycap-base-label {
+  font-family: var(--typing-display-font);
+}
+
+.challenge-character {
+  display: inline-block;
+  font-size: clamp(5rem, 9vw, 8.2rem);
+  font-weight: 800;
+  line-height: 0.88;
+  vertical-align: bottom;
+  text-shadow: 0 0 40px rgba(139, 233, 253, 0.35);
+}
+
+.feedback-slot {
+  width: 100%;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.feedback-slot .feedback-copy {
+  align-items: center;
+  text-align: center;
+}
+
+.feedback-slot .feedback-label {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  letter-spacing: 0.12em;
+}
+
+.feedback-slot .feedback-detail {
+  font-size: 12px;
+}
+
+/* 카드 단위 애니메이션은 입력 직후 다음 문자로 넘어가도 이펙트가 남도록 유지한다 */
+.challenge-card.is-miss-shake {
+  animation: challengeCardShake 150ms ease-out;
+}
+
+.challenge-card.is-hit-flash {
+  animation: challengeCardFlash 140ms ease-out;
+}
+
+.challenge-card.is-perfect-pop {
+  animation: challengeCardPerfect 320ms cubic-bezier(0.16, 0.9, 0.18, 1);
+}
+
+.challenge-upcoming {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: clamp(20px, 2vw, 32px);
+  flex: 0 1 auto;
+  justify-content: flex-start;
+  white-space: nowrap;
+  grid-column: 3;
+  justify-self: start;
+  margin-left: clamp(36px, 4vw, 64px);
+}
+
+.challenge-upcoming-character {
+  display: inline-block;
+  font-size: clamp(5rem, 9vw, 8.2rem);
+  font-weight: 800;
+  line-height: 0.88;
+  vertical-align: bottom;
+}
+
+.challenge-inline-gauge {
+  width: 100%;
+}
+
+/* 키보드 패널 상단은 현재 영역, 설정 버튼, 무한모드 상태를 한 줄에 배치한다 */
+.keyboard-panel {
+  width: 100%;
+  padding: 16px;
+  border-radius: 26px;
+}
+
+.keyboard-setting-button {
+  padding: 7px 10px;
+  border: 1px solid rgba(139, 233, 253, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted-text);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.keyboard-setting-button:hover {
+  transform: translateY(-1px);
+  color: var(--strong-text);
+  border-color: rgba(139, 233, 253, 0.42);
+}
+
+.keyboard-setting-button.is-active {
+  color: #06101f;
+  background: linear-gradient(135deg, #8be9fd, #6df7c1);
+  border-color: transparent;
+}
+
+/* 키보드 키 시각화: 현재 키, 보조 Shift, 약점 키 강조를 이 구간에서 처리한다 */
+.keyboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 8px;
+}
+
+.keycap {
+  position: relative;
+  min-height: 54px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 12px;
+  text-align: left;
+  overflow: hidden;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.keycap::after {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.28) 34%,
+    rgba(255, 255, 255, 0) 72%
+  );
+  opacity: 0;
+  transform: scale(0.7);
+  pointer-events: none;
+}
+
+@keyframes keycapPressedFlash {
+  0% {
+    opacity: 0;
+    transform: scale(0.64);
+  }
+
+  30% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+.keycap-char {
+  --risk-alpha: 0;
+  --risk-rgb: 255, 77, 77;
+  /* 약점 강조는 손 영역 색상과 내부 광량을 함께 올려 단계적으로 보이게 한다. */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03)),
+    linear-gradient(
+      180deg,
+      rgba(var(--risk-rgb), calc(var(--risk-alpha) * 0.24)),
+      rgba(var(--risk-rgb), calc(var(--risk-alpha) * 0.1))
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--risk-rgb), calc(var(--risk-alpha) * 0.34)),
+    0 0 18px rgba(var(--risk-rgb), calc(var(--risk-alpha) * 0.12));
+}
+
+.keycap-left {
+  --risk-rgb: 255, 209, 102;
+  border-color: rgba(255, 209, 102, 0.14);
+}
+
+.keycap-right {
+  --risk-rgb: 255, 96, 96;
+  border-color: rgba(255, 96, 96, 0.14);
+}
+
+.keycap-action {
+  justify-content: center;
+  align-items: center;
+  color: var(--muted-text);
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.keycap-action-label {
+  white-space: nowrap;
+}
+
+.keycap-shift-label {
+  color: var(--muted-text);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.keycap-base-label {
+  color: var(--strong-text);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.keycap.is-current {
+  transform: translateY(-2px);
+  border-color: rgba(109, 247, 193, 0.72);
+  background:
+    linear-gradient(180deg, rgba(109, 247, 193, 0.2), rgba(109, 247, 193, 0.08)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 0 26px rgba(109, 247, 193, 0.18);
+}
+
+.status-text {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.keycap.is-shift-helper {
+  transform: translateY(-2px);
+  border-color: rgba(109, 247, 193, 0.72);
+  background:
+    linear-gradient(180deg, rgba(109, 247, 193, 0.2), rgba(109, 247, 193, 0.08)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  box-shadow: 0 0 26px rgba(109, 247, 193, 0.18);
+}
+
+.keycap.is-pressed-flash::after {
+  animation: keycapPressedFlash 180ms ease-out;
+}
+
+/* 하단 푸터는 상태 안내와 재시작 액션을 한 묶음으로 보여준다 */
+.game-stage-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 24px;
+}
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.footer-mode-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.footer-mode-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer-setting-controls {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.footer-setting-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+
+.footer-setting-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.footer-mode-button {
+  padding: 5px 9px;
+  font-size: 8px;
+}
+
+.footer-setting-button {
+  padding: 5px 9px;
+  font-size: 8px;
+}
+
+.footer-actions .mode-button.is-active,
+.footer-actions .keyboard-setting-button.is-active,
+.footer-actions .assist-toggle.is-active {
+  color: var(--strong-text);
+  border-color: rgba(109, 247, 193, 0.54);
+  background: rgba(109, 247, 193, 0.14);
+}
+
+.footer-separator {
+  width: 1px;
+  align-self: stretch;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+  box-shadow: 1px 0 0 rgba(7, 10, 16, 0.28);
+}
+
+.restart-button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(135deg, rgba(139, 233, 253, 0.16), rgba(109, 247, 193, 0.16));
+  color: var(--strong-text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.restart-shortcut {
+  font-size: 7px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--muted-text);
+}
+
+.restart-label {
+  font-size: 8px;
+  line-height: 1.1;
+}
+
+.footer-mode-controls .keyboard-meta-label,
+.footer-setting-group .keyboard-meta-label {
+  margin-bottom: 4px;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.restart-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(139, 233, 253, 0.5);
+}
+
+/* 대형 화면에서는 2열 구조를 유지하되 폰트와 헤더 줄바꿈만 미세 조정한다 */
+@media (max-width: 1440px) {
+  .game-shell {
+    padding: clamp(18px, 2vw, 28px);
+  }
+
+  .challenge-character {
+    font-size: clamp(4.4rem, 8.2vw, 7.4rem);
+  }
+}
+
+/* 태블릿 구간부터는 사이드바와 스테이지를 1열로 전환한다 */
+@media (max-width: 1180px) {
+  .challenge-meta {
+    max-width: min(52%, 440px);
+  }
+
+  .game-stage {
+    min-height: 0;
+  }
+}
+
+/* 중간 폭에서는 헤더와 푸터를 세로로 쌓아 버튼 영역이 눌리지 않게 한다 */
+@media (max-width: 860px) {
+  .game-stage-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .scoreboard {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-card {
+    min-height: 200px;
+  }
+
+  .feedback {
+    gap: 10px;
+  }
+
+  .challenge-meta {
+    position: static;
+    max-width: none;
+    margin-bottom: 12px;
+  }
+
+  .footer-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .footer-separator {
+    display: none;
+  }
+
+}
+
+/* 모바일 구간에서는 설정 버튼, 문자 줄, 키보드 폭을 각각 읽기 쉬운 형태로 재배치한다 */
+@media (max-width: 720px) {
+  .game-shell {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .challenge-meta {
+    gap: 1px;
+    padding: 6px 8px;
+    max-width: min(64%, 260px);
+  }
+
+  .challenge-meta-key {
+    font-size: 6px;
+  }
+
+  .challenge-meta-item strong {
+    font-size: 6px;
+  }
+
+  .challenge-meta-sample {
+    font-size: 5px;
+  }
+
+  .challenge-meta-group-title-cumulative,
+  .challenge-meta-line-cumulative-summary,
+  .challenge-meta-line-cumulative-weak,
+  .challenge-meta-line-hand-left,
+  .challenge-meta-item-hand-right {
+    display: none;
+  }
+
+  .challenge-meta-group-title-session {
+    margin-top: 0;
+  }
+
+  .hand-card-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .footer-mode-buttons {
+    width: 100%;
+  }
+
+  .footer-setting-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .footer-setting-buttons {
+    width: 100%;
+  }
+
+  .footer-mode-button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .footer-setting-button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .challenge-line {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .challenge-current {
+    min-width: max-content;
+  }
+
+  .feedback-inline {
+    max-width: 100%;
+  }
+
+  .challenge-upcoming {
+    width: auto;
+    white-space: normal;
+    margin-left: 0;
+  }
+
+  .challenge-lock-panel {
+    width: 94%;
+  }
+
+  .keyboard-panel {
+    overflow-x: auto;
+  }
+
+  .keyboard-rows {
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 430px) {
+  .challenge-meta,
+  .keyboard-panel,
+  .game-stage-footer {
+    display: none;
+  }
+
+  .game-stage-main {
+    gap: 12px;
+  }
+
+  .challenge-card {
+    min-height: 0;
+    gap: 10px;
+  }
+
+  .challenge-card-main {
+    gap: 4px;
+  }
+
+  .challenge-lock-overlay {
+    padding: 14px;
+  }
+
+  .challenge-lock-overlay::before,
+  .challenge-lock-overlay::after {
+    height: 22px;
+  }
+
+  .challenge-lock-panel {
+    width: 100%;
+    padding: 14px 12px;
+  }
+}
