@@ -1,13 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { setupInfoConsole } from './infoConsole'
+import { render } from "solid-js/web";
+import "./index.css";
+import App from "./App";
+import { setupInfoConsole } from "./infoConsole";
 
-setupInfoConsole()
+setupInfoConsole();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const root = document.getElementById("root");
+
+if (root !== null) {
+  render(() => <App />, root);
+}

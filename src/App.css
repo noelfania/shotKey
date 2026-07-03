@@ -465,8 +465,8 @@
   padding: clamp(18px, 2vw, 26px);
   border-radius: 34px;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 52%),
-    linear-gradient(180deg, rgba(14, 14, 14, 0.94), rgba(4, 4, 4, 0.98));
+    var(--challenge-card-bg-highlight),
+    var(--challenge-card-bg);
   color: var(--strong-text);
   user-select: none;
   overflow: hidden;
@@ -496,13 +496,13 @@
   background:
     linear-gradient(
       90deg,
-      rgba(255, 31, 77, 0.2),
+      var(--feedback-miss-stripe),
       rgba(255, 31, 77, 0.02) 16%,
       rgba(255, 31, 77, 0.02) 84%,
-      rgba(255, 31, 77, 0.2)
+      var(--feedback-miss-stripe)
     ),
     radial-gradient(circle at center, rgba(255, 142, 36, 0.16), transparent 48%),
-    rgba(3, 0, 0, 0.62);
+    var(--feedback-miss-overlay);
   backdrop-filter: blur(2px) saturate(1.28);
 }
 
@@ -725,12 +725,8 @@
   height: clamp(84px, 10vw, 128px);
   transform: translateY(-50%);
   border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.05)
-  );
-  box-shadow: 1px 0 0 rgba(7, 10, 16, 0.28);
+  background: var(--challenge-focus-guide);
+  box-shadow: 1px 0 0 var(--challenge-focus-guide-shadow);
 }
 
 .challenge-focus::before {
@@ -750,11 +746,113 @@
 
 .challenge-character {
   display: inline-block;
+  color: var(--strong-text);
   font-size: clamp(5rem, 9vw, 8.2rem);
   font-weight: 800;
   line-height: 0.88;
   vertical-align: bottom;
-  text-shadow: 0 0 40px rgba(139, 233, 253, 0.35);
+  text-shadow: 0 0 40px var(--challenge-char-glow);
+}
+
+.challenge-character-upper {
+  font-weight: 800;
+}
+
+.challenge-character-lower {
+  font-weight: 550;
+}
+
+.challenge-character-neutral {
+  font-weight: 800;
+}
+
+.challenge-upcoming-character.challenge-character-lower {
+  font-weight: 500;
+}
+
+/* 좌하단 테마 토글 + 빌드 메타 */
+.app-build-meta-bar {
+  position: fixed;
+  left: clamp(12px, 2vw, 20px);
+  bottom: clamp(10px, 1.6vw, 16px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.app-build-meta-bar > * {
+  pointer-events: auto;
+}
+
+.app-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  color: var(--strong-text);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.app-theme-toggle:hover {
+  background: var(--track-bg);
+  border-color: var(--link-text);
+}
+
+.app-theme-toggle:focus-visible {
+  outline: 2px solid var(--link-text);
+  outline-offset: 2px;
+}
+
+.app-theme-toggle-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.app-build-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  color: var(--muted-text);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.app-build-meta-version {
+  color: var(--strong-text);
+  font-weight: 700;
+}
+
+.app-build-meta-link {
+  color: var(--link-text, #8be9fd);
+  text-decoration: none;
+}
+
+.app-build-meta-link:hover {
+  text-decoration: underline;
+}
+
+.app-build-meta-separator {
+  opacity: 0.45;
 }
 
 .feedback-slot {
@@ -805,6 +903,7 @@
 
 .challenge-upcoming-character {
   display: inline-block;
+  color: var(--strong-text);
   font-size: clamp(5rem, 9vw, 8.2rem);
   font-weight: 800;
   line-height: 0.88;
@@ -866,7 +965,7 @@
   position: relative;
   min-height: 54px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--keycap-border);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -945,7 +1044,7 @@
   align-items: center;
   color: var(--muted-text);
   font-size: 13px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--keycap-bg);
 }
 
 .keycap-action-label {
@@ -974,13 +1073,6 @@
   box-shadow: 0 0 26px rgba(109, 247, 193, 0.18);
 }
 
-.status-text {
-  margin: 0;
-  color: var(--muted-text);
-  font-size: 11px;
-  line-height: 1.4;
-}
-
 .keycap.is-shift-helper {
   transform: translateY(-2px);
   border-color: rgba(109, 247, 193, 0.72);
@@ -994,11 +1086,11 @@
   animation: keycapPressedFlash 180ms ease-out;
 }
 
-/* 하단 푸터는 상태 안내와 재시작 액션을 한 묶음으로 보여준다 */
+/* 하단 푸터는 설정 토글과 재시작 액션을 한 묶음으로 보여준다 */
 .game-stage-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 16px;
   padding: 14px 16px;
   border-radius: 24px;
@@ -1128,7 +1220,8 @@
     padding: clamp(18px, 2vw, 28px);
   }
 
-  .challenge-character {
+  .challenge-character,
+  .challenge-upcoming-character {
     font-size: clamp(4.4rem, 8.2vw, 7.4rem);
   }
 }

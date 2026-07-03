@@ -1,4 +1,6 @@
-:root {
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
   --app-bg: #000000;
   --app-bg-accent: #080808;
   --panel-bg: rgba(10, 10, 10, 0.82);
@@ -7,9 +9,69 @@
   --track-bg: rgba(255, 255, 255, 0.06);
   --strong-text: #f7f9fb;
   --muted-text: #a2aab4;
+  --link-text: #8be9fd;
   --typing-display-font:
     'Cascadia Mono', 'Consolas', 'JetBrains Mono', 'SFMono-Regular', 'Roboto Mono', monospace;
+  --feedback-miss-overlay: rgba(3, 0, 0, 0.62);
+  --feedback-miss-stripe: rgba(255, 31, 77, 0.2);
+  --keycap-bg: rgba(255, 255, 255, 0.04);
+  --keycap-border: rgba(255, 255, 255, 0.1);
+  --keycap-current-glow: rgba(139, 233, 253, 0.35);
+  --challenge-char-glow: rgba(139, 233, 253, 0.35);
+  --challenge-card-bg-highlight: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.08),
+    transparent 52%
+  );
+  --challenge-card-bg: linear-gradient(
+    180deg,
+    rgba(14, 14, 14, 0.94),
+    rgba(4, 4, 4, 0.98)
+  );
+  --challenge-focus-guide: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05)
+  );
+  --challenge-focus-guide-shadow: rgba(7, 10, 16, 0.28);
+}
 
+[data-theme="light"] {
+  color-scheme: light;
+  --app-bg: #eef1f5;
+  --app-bg-accent: #f8fafc;
+  --panel-bg: rgba(255, 255, 255, 0.9);
+  --panel-border: rgba(15, 23, 42, 0.1);
+  --panel-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+  --track-bg: rgba(15, 23, 42, 0.06);
+  --strong-text: #1a1d21;
+  --muted-text: #5c6673;
+  --link-text: #0b6e99;
+  --feedback-miss-overlay: rgba(255, 245, 245, 0.82);
+  --feedback-miss-stripe: rgba(255, 31, 77, 0.14);
+  --keycap-bg: rgba(15, 23, 42, 0.04);
+  --keycap-border: rgba(15, 23, 42, 0.12);
+  --keycap-current-glow: rgba(11, 110, 153, 0.22);
+  --challenge-char-glow: rgba(11, 110, 153, 0.18);
+  --challenge-card-bg-highlight: radial-gradient(
+    circle at top,
+    rgba(11, 110, 153, 0.1),
+    transparent 52%
+  );
+  --challenge-card-bg: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(236, 241, 247, 0.96)
+  );
+  --challenge-focus-guide: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.22),
+    rgba(15, 23, 42, 0.06)
+  );
+  --challenge-focus-guide-shadow: rgba(15, 23, 42, 0.12);
+}
+
+:root {
   font-family:
     'Segoe UI', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   line-height: 1.5;
@@ -23,6 +85,13 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="light"] {
+  background:
+    radial-gradient(circle at top, rgba(11, 110, 153, 0.06), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.04), transparent 26%),
+    linear-gradient(180deg, var(--app-bg-accent), var(--app-bg));
 }
 
 #root {

@@ -12,9 +12,9 @@
 
 ## Project Context
 
-- 우선 `.cursor/rules/project-standards.mdc`를 읽고 현재 UI 구조를 이해한다.
-- 필요하면 `.cursor/rules/project-design-spec.md`를 참고한다.
-- 실제 구현 확인은 `src/App.tsx`를 기준으로 한다.
+- [docs/reference/gameplay-rules.md](../../docs/reference/gameplay-rules.md) — UI 구성
+- [docs/reference/architecture.md](../../docs/reference/architecture.md) — 컴포넌트 위치
+- 구현: `src/App.tsx`, `src/components/`
 
 ## Instructions
 
