@@ -8,8 +8,18 @@
 
 ### Added
 
+- US QWERTY / Japanese (JIS) keyboard layouts with first-run selection modal
+- Footer Layout button to change keyboard layout anytime
+- JIS Enter keycap rendered as an L-shape (`jis-enter` + `jis-enter-slot`, fixed key unit)
+- `docs/reference/keyboard-layout-extensibility.md` — 향후 레이아웃 추가 가이드
 - `docs/` 폴더 문서 구조 (development, operations, planning, reference)
 - 게임 규칙·코딩 규칙·배포 절차 docs 이전, `.cursor` rules link-only화
+
+### Changed
+
+- Visible UI strings switched to English
+- Project name ShotKey (npm `shot-key`, GitHub Pages `/shotKey/`)
+- localStorage prefix `shot-key:`
 
 ### Removed
 

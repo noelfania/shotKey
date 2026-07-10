@@ -26,7 +26,7 @@ export function BuildMeta(props: BuildMetaProps) {
         type="button"
         class="app-theme-toggle"
         aria-label={
-          props.theme() === "light" ? "다크 테마로 전환" : "라이트 테마로 전환"
+          props.theme() === "light" ? "Switch to dark theme" : "Switch to light theme"
         }
         aria-pressed={props.theme() === "dark"}
         onClick={toggleTheme}
@@ -61,7 +61,7 @@ export function BuildMeta(props: BuildMetaProps) {
         )}
       </button>
 
-      <aside class="app-build-meta" aria-label="앱 버전 정보">
+      <aside class="app-build-meta" aria-label="App version">
         <span class="app-build-meta-version">v{appVersion}</span>
         <span class="app-build-meta-separator" aria-hidden="true">
           ·
@@ -76,7 +76,7 @@ export function BuildMeta(props: BuildMetaProps) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          변경 내역
+          Changelog
         </a>
       </aside>
     </div>

@@ -1,11 +1,13 @@
-import { Show } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import "./App.css";
 import { BuildMeta } from "./components/BuildMeta";
 import { ChallengeCard } from "./components/ChallengeCard";
 import { GameFooter } from "./components/GameFooter";
+import { KeyboardLayoutModal } from "./components/KeyboardLayoutModal";
 import { KeyboardPanel } from "./components/KeyboardPanel";
 import { createGameSession } from "./hooks/createGameSession";
 import { useTheme } from "./hooks/useTheme";
+import type { KeyboardLayoutId } from "./game/types";
 
 /**
  * 타이핑 훈련 화면의 최상위 셸 컴포넌트다.
@@ -13,6 +15,22 @@ import { useTheme } from "./hooks/useTheme";
 export default function App() {
   const session = createGameSession();
   const theme = useTheme();
+  const [layoutModalOpen, setLayoutModalOpen] = createSignal(false);
+
+  onMount(() => {
+    if (session.keyboardLayout() === null) {
+      setLayoutModalOpen(true);
+    }
+  });
+
+  /**
+   * 레이아웃을 선택하고 모달을 닫는다.
+   * @param layoutId us 또는 jis
+   */
+  const handleSelectLayout = (layoutId: KeyboardLayoutId) => {
+    session.setKeyboardLayout(layoutId);
+    setLayoutModalOpen(false);
+  };
 
   return (
     <main class="game-shell" style={session.appStyle()}>
@@ -40,6 +58,7 @@ export default function App() {
           />
           <Show when={session.keyboardPanelVisible()}>
             <KeyboardPanel
+              rows={session.keyboardRows}
               challenge={session.challenge}
               keyboardHintsVisible={session.keyboardHintsVisible}
               typedKeyFlashEnabled={session.typedKeyFlashEnabled}
@@ -68,8 +87,17 @@ export default function App() {
           setTypedKeyFlashEnabled={session.setTypedKeyFlashEnabled}
           clearTypedKeyFlash={session.clearTypedKeyFlash}
           setSelectedFontPresetId={session.setSelectedFontPresetId}
+          onOpenLayoutModal={() => setLayoutModalOpen(true)}
         />
       </section>
+
+      <KeyboardLayoutModal
+        open={layoutModalOpen()}
+        required={session.keyboardLayout() === null}
+        currentLayout={session.keyboardLayout()}
+        onSelect={handleSelectLayout}
+        onClose={() => setLayoutModalOpen(false)}
+      />
     </main>
   );
 }

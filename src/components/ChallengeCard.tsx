@@ -37,7 +37,7 @@ export function ChallengeCard(props: ChallengeCardProps) {
     <div
       ref={props.setChallengeCardRef}
       class="challenge-card"
-      aria-label="현재 문자와 다음 문자"
+      aria-label="Current and upcoming characters"
     >
       <Show when={props.isInputLocked()}>
         <div class="challenge-lock-overlay" aria-hidden="true">
@@ -59,22 +59,22 @@ export function ChallengeCard(props: ChallengeCardProps) {
           </div>
         </div>
       </Show>
-      <div class="challenge-meta" aria-label="현재 훈련 정보">
+      <div class="challenge-meta" aria-label="Training stats">
         <span class="challenge-meta-group-title challenge-meta-group-title-cumulative">
-          최고 기록
+          Best
         </span>
         <div class="challenge-meta-line challenge-meta-line-cumulative-summary">
           <span class="challenge-meta-item">
-            <span class="challenge-meta-key">점수</span>
+            <span class="challenge-meta-key">Score</span>
             <strong>{props.bestScore()}</strong>
           </span>
           <span class="challenge-meta-item">
-            <span class="challenge-meta-key">연속</span>
+            <span class="challenge-meta-key">Streak</span>
             <strong>{props.bestStreak()}</strong>
           </span>
           <span class="challenge-meta-item">
             <span class="challenge-meta-key">
-              버틴시간
+              Survival
               <span class="challenge-meta-sample">(mm:ss.sss)</span>
             </span>
             <strong>
@@ -87,8 +87,8 @@ export function ChallengeCard(props: ChallengeCardProps) {
         <div class="challenge-meta-line challenge-meta-line-cumulative-weak">
           <span class="challenge-meta-item challenge-meta-item-long">
             <span class="challenge-meta-key">
-              많이틀린문자{" "}
-              <span class="challenge-meta-sample">(오답수/시도수)</span>
+              Most missed{" "}
+              <span class="challenge-meta-sample">(misses/attempts)</span>
             </span>
             <strong>
               <Show
@@ -111,23 +111,23 @@ export function ChallengeCard(props: ChallengeCardProps) {
           </span>
         </div>
         <span class="challenge-meta-group-title challenge-meta-group-title-session">
-          현재 세션 기록
+          Session
         </span>
         <div class="challenge-meta-line challenge-meta-line-session-summary">
           <span class="challenge-meta-item">
-            <span class="challenge-meta-key">점수</span>
+            <span class="challenge-meta-key">Score</span>
             <strong>{props.score()}</strong>
           </span>
           <span class="challenge-meta-item">
-            <span class="challenge-meta-key">연속</span>
+            <span class="challenge-meta-key">Streak</span>
             <strong>{props.streak()}</strong>
           </span>
         </div>
         <div class="challenge-meta-line challenge-meta-line-hand-left">
           <span class="challenge-meta-item">
             <span class="challenge-meta-key">
-              왼손정확도{" "}
-              <span class="challenge-meta-sample">(정답/오답/정확도)</span>
+              Left accuracy{" "}
+              <span class="challenge-meta-sample">(hit/miss/acc)</span>
             </span>
             <strong>
               {props.handStats().left.hit}/{props.handStats().left.miss}/
@@ -137,8 +137,8 @@ export function ChallengeCard(props: ChallengeCardProps) {
         </div>
         <span class="challenge-meta-item challenge-meta-item-hand-right">
           <span class="challenge-meta-key">
-            오른손정확도{" "}
-            <span class="challenge-meta-sample">(정답/오답/정확도)</span>
+            Right accuracy{" "}
+            <span class="challenge-meta-sample">(hit/miss/acc)</span>
           </span>
           <strong>
             {props.handStats().right.hit}/{props.handStats().right.miss}/
@@ -157,7 +157,7 @@ export function ChallengeCard(props: ChallengeCardProps) {
             </div>
           </div>
 
-          <div class="challenge-upcoming" aria-label="다음에 나올 문자">
+          <div class="challenge-upcoming" aria-label="Upcoming characters">
             <For each={props.upcomingChallenges()}>
               {(entry, index) => (
                 <ChallengeCharacter
@@ -178,7 +178,7 @@ export function ChallengeCard(props: ChallengeCardProps) {
         </div>
         <div
           class="challenge-inline-gauge"
-          aria-label={`집중 게이지 ${Math.ceil(props.gauge())}%`}
+          aria-label={`Focus gauge ${Math.ceil(props.gauge())}%`}
         >
           <div class="gauge-track gauge-track-slim" aria-hidden="true">
             <div class="gauge-fill" style={props.gaugeFillStyle()} />

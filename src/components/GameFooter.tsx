@@ -20,6 +20,7 @@ type GameFooterProps = {
   setTypedKeyFlashEnabled: (value: boolean) => void;
   clearTypedKeyFlash: () => void;
   setSelectedFontPresetId: (value: TypingFontPresetId) => void;
+  onOpenLayoutModal: () => void;
 };
 
 /**
@@ -30,7 +31,7 @@ export function GameFooter(props: GameFooterProps) {
     <footer class="game-stage-footer">
       <div class="footer-actions">
         <div class="footer-mode-controls">
-          <span class="keyboard-meta-label">훈련모드</span>
+          <span class="keyboard-meta-label">Mode</span>
           <div class="footer-mode-buttons">
             <For each={modeOptions}>
               {(option) => (
@@ -51,17 +52,17 @@ export function GameFooter(props: GameFooterProps) {
                 props.setEndlessModeEnabled(!props.endlessModeEnabled())
               }
             >
-              무한모드
+              Endless
             </button>
           </div>
         </div>
         <span class="footer-separator" aria-hidden="true" />
         <div
           class="footer-setting-controls"
-          aria-label="피드백, 키보드, 폰트 설정"
+          aria-label="Feedback, keyboard, and font settings"
         >
           <div class="footer-setting-group">
-            <span class="keyboard-meta-label">피드백</span>
+            <span class="keyboard-meta-label">Feedback</span>
             <div class="footer-setting-buttons">
               <button
                 type="button"
@@ -69,7 +70,7 @@ export function GameFooter(props: GameFooterProps) {
                 aria-pressed={props.soundEnabled()}
                 onClick={() => props.setSoundEnabled(!props.soundEnabled())}
               >
-                소리
+                Sound
               </button>
               <button
                 type="button"
@@ -79,13 +80,13 @@ export function GameFooter(props: GameFooterProps) {
                   props.setVisualEffectsEnabled(!props.visualEffectsEnabled())
                 }
               >
-                시각효과
+                Visual
               </button>
             </div>
           </div>
           <span class="footer-separator" aria-hidden="true" />
           <div class="footer-setting-group">
-            <span class="keyboard-meta-label">키보드</span>
+            <span class="keyboard-meta-label">Keyboard</span>
             <div class="footer-setting-buttons">
               <button
                 type="button"
@@ -95,7 +96,7 @@ export function GameFooter(props: GameFooterProps) {
                   props.setKeyboardPanelVisible(!props.keyboardPanelVisible())
                 }
               >
-                패널
+                Panel
               </button>
               <button
                 type="button"
@@ -105,7 +106,7 @@ export function GameFooter(props: GameFooterProps) {
                   props.setKeyboardHintsVisible(!props.keyboardHintsVisible())
                 }
               >
-                가이드
+                Guide
               </button>
               <button
                 type="button"
@@ -121,13 +122,20 @@ export function GameFooter(props: GameFooterProps) {
                   props.setTypedKeyFlashEnabled(nextValue);
                 }}
               >
-                반짝
+                Flash
+              </button>
+              <button
+                type="button"
+                class="keyboard-setting-button footer-setting-button"
+                onClick={() => props.onOpenLayoutModal()}
+              >
+                Layout
               </button>
             </div>
           </div>
           <span class="footer-separator" aria-hidden="true" />
           <div class="footer-setting-group">
-            <span class="keyboard-meta-label">폰트</span>
+            <span class="keyboard-meta-label">Font</span>
             <div class="footer-setting-buttons">
               <For each={typingFontPresets}>
                 {(preset) => (
@@ -150,7 +158,7 @@ export function GameFooter(props: GameFooterProps) {
           class="restart-button"
           onClick={() => props.resetGame()}
         >
-          <span class="restart-label">다시 시작</span>
+          <span class="restart-label">Restart</span>
           <span class="restart-shortcut">Ctrl + Enter</span>
         </button>
       </div>

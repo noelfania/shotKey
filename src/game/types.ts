@@ -54,6 +54,9 @@ export type ModeOption = {
   description: string;
 };
 
+/** 키캡 외형. jis-enter = L자 Enter 본체, jis-enter-slot = 홈행 줄기 자리 확보용 */
+export type KeycapShape = "standard" | "jis-enter" | "jis-enter-slot";
+
 export type KeyboardKey = {
   id: string;
   kind: "char" | "action";
@@ -61,8 +64,10 @@ export type KeyboardKey = {
   shifted?: string;
   helperShiftKeyId?: ShiftKeyId;
   actionLabel?: string;
+  actionLabelLines?: string[];
   hand?: BaseHand;
   widthUnits?: number;
+  shape?: KeycapShape;
 };
 
 export type ChallengeQueue = {
@@ -84,3 +89,11 @@ export type TypingFontPreset = {
 };
 
 export type AppTheme = "light" | "dark";
+
+export type KeyboardLayoutId = "us" | "jis";
+
+export type KeyboardLayoutDefinition = {
+  id: KeyboardLayoutId;
+  label: string;
+  rows: KeyboardKey[][];
+};

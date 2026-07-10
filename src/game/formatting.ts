@@ -2,12 +2,12 @@ import type { HandGroup, HandRecord, TrainingMode } from "./types";
 import { modeOptions } from "./constants";
 
 /**
- * 손 영역 값을 화면용 한글 라벨로 변환한다.
+ * 손 영역 값을 화면용 영문 라벨로 변환한다.
  * @param group left 또는 right
- * @returns 화면에 표시할 한글 라벨
+ * @returns 화면에 표시할 영문 라벨
  */
 export function getGroupLabel(group: HandGroup) {
-  return group === "left" ? "왼손" : "오른손";
+  return group === "left" ? "Left" : "Right";
 }
 
 /**

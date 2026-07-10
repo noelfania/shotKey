@@ -919,6 +919,8 @@
   width: 100%;
   padding: 16px;
   border-radius: 26px;
+  /* JIS 등 넓은 행이 패널보다 클 때 우측 키가 잘리지 않게 한다 */
+  overflow-x: auto;
 }
 
 .keyboard-setting-button {
@@ -951,19 +953,34 @@
 
 /* 키보드 키 시각화: 현재 키, 보조 Shift, 약점 키 강조를 이 구간에서 처리한다 */
 .keyboard-rows {
+  --keyboard-row-gap: 8px;
+  --keycap-min-height: 54px;
+  /* 행마다 flex-grow 비율이 달라 열이 어긋나지 않도록 고정 단위 사용 */
+  --key-u: clamp(34px, 4.6vw, 52px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--keyboard-row-gap);
+  width: max-content;
+  /* 100%로 줄이면 JIS 1행이 다른 행보다 넓어 우측 키만 밀려난다 */
+  min-width: max-content;
+  margin-inline: auto;
 }
 
 .keyboard-row {
   display: flex;
-  gap: 8px;
+  align-items: flex-start;
+  /* 공통 행 폭의 양끝을 맞춰 왼쪽 기능 키가 계단식으로 밀리지 않게 한다. */
+  justify-content: space-between;
+  gap: var(--keyboard-row-gap);
+  width: 100%;
 }
 
 .keycap {
   position: relative;
-  min-height: 54px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: calc(var(--width-units, 1) * var(--key-u));
+  min-height: var(--keycap-min-height);
   border-radius: 16px;
   border: 1px solid var(--keycap-border);
   display: flex;
@@ -978,6 +995,87 @@
     border-color 0.18s ease,
     background-color 0.18s ease,
     box-shadow 0.18s ease;
+}
+
+/* JIS Enter: Q행 앵커 + 절대 배치 L자(┐). 홈행 슬롯이 줄기 폭을 확보하고 ]는 노치에 둔다. */
+.keycap-jis-enter-anchor {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--width-units, 1) * var(--key-u));
+  min-height: var(--keycap-min-height);
+  z-index: 2;
+}
+
+.keycap-jis-enter-slot {
+  flex: 0 0 auto;
+  width: calc(var(--width-units, 1) * var(--key-u));
+  min-height: var(--keycap-min-height);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.keycap.keycap-jis-enter {
+  --jis-enter-fill: var(--keycap-bg);
+  --jis-enter-stroke: var(--keycap-border);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(2 * var(--keycap-min-height) + var(--keyboard-row-gap));
+  min-height: calc(2 * var(--keycap-min-height) + var(--keyboard-row-gap));
+  z-index: 3;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  filter: none;
+  background: transparent;
+}
+
+/* 오목한 모서리까지 선명한 외곽선을 유지하도록 L자 면을 SVG 경로로 그린다. */
+.keycap-jis-enter-shape {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.keycap-jis-enter-shape path {
+  fill: var(--jis-enter-fill);
+  stroke: var(--jis-enter-stroke);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition:
+    fill 0.18s ease,
+    stroke 0.18s ease;
+}
+
+/* 라벨은 상단 가로 영역 안에서 수평·수직 중앙에 둔다. */
+.keycap-jis-enter .keycap-action-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--keycap-min-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.keycap.keycap-jis-enter.is-current,
+.keycap.keycap-jis-enter.is-shift-helper {
+  --jis-enter-fill: color-mix(in srgb, #6df7c1 18%, var(--keycap-bg));
+  --jis-enter-stroke: rgba(109, 247, 193, 0.85);
+  box-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(109, 247, 193, 0.22));
+  background: transparent;
 }
 
 .keycap::after {
@@ -1049,6 +1147,15 @@
 
 .keycap-action-label {
   white-space: nowrap;
+}
+
+.keycap-action-label-lines {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: flex-start;
+  line-height: 1.05;
+  text-align: left;
 }
 
 .keycap-shift-label {
@@ -1370,10 +1477,6 @@
     width: 94%;
   }
 
-  .keyboard-panel {
-    overflow-x: auto;
-  }
-
   .keyboard-rows {
     min-width: 720px;
   }
@@ -1412,4 +1515,128 @@
     width: 100%;
     padding: 14px 12px;
   }
+}
+
+/* 키보드 레이아웃 선택 모달 */
+.layout-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 10, 16, 0.62);
+  backdrop-filter: blur(8px);
+}
+
+.layout-modal {
+  width: min(720px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 24px;
+  border-radius: 28px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg);
+  box-shadow: var(--panel-shadow);
+  color: var(--strong-text);
+}
+
+.layout-modal-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+  font-weight: 700;
+}
+
+.layout-modal-subtitle {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 14px;
+}
+
+.layout-modal-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.layout-modal-option {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  padding: 18px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--panel-border);
+  background: var(--track-bg);
+  color: var(--strong-text);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.layout-modal-option:hover {
+  transform: translateY(-1px);
+  border-color: var(--link-text);
+}
+
+.layout-modal-option.is-active {
+  border-color: var(--link-text);
+  box-shadow: 0 0 0 1px var(--link-text);
+}
+
+.layout-modal-option-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.layout-modal-preview {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.layout-modal-preview-key {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 34px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--keycap-border);
+  background: var(--keycap-bg);
+  font-family: var(--typing-display-font);
+  line-height: 1;
+}
+
+.layout-modal-preview-shift {
+  color: var(--muted-text);
+  font-size: 9px;
+  min-height: 10px;
+}
+
+.layout-modal-preview-base {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.layout-modal-cancel {
+  align-self: flex-end;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-text);
+  cursor: pointer;
+}
+
+.layout-modal-cancel:hover {
+  color: var(--strong-text);
 }

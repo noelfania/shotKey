@@ -4,7 +4,7 @@ alwaysApply: true
 ---
 # ShotKey — 프로젝트 요약
 
-영문 QWERTY 단일 문자 타이핑 훈련 웹앱. `keydown`만으로 플레이. SolidJS + Vite, GitHub Pages 정적 호스팅. DB·계정 없음.
+영문 키보드(US QWERTY / Japanese JIS) 단일 문자 타이핑 훈련 웹앱. `keydown`만으로 플레이. SolidJS + Vite, GitHub Pages 정적 호스팅. DB·계정 없음.
 
 ## 범위
 

@@ -21,6 +21,7 @@ import {
   endlessModeStorageKey,
   gaugeMax,
   keyboardHintsVisibleStorageKey,
+  keyboardLayoutStorageKey,
   keyboardPanelVisibleStorageKey,
   keycapFlashDurationMs,
   missLockMs,
@@ -42,8 +43,9 @@ import {
 } from "../game/formatting";
 import {
   getKeyboardEventKeyId,
-  keyboardKeyMap,
-  keyboardKeys,
+  getKeyboardKeyMap,
+  getKeyboardKeys,
+  getKeyboardRows,
 } from "../game/keyboardLayout";
 import { getGaugeDecayPerTick, getRewardBySpeed } from "../game/scoring";
 import {
@@ -55,10 +57,12 @@ import {
   updateHandStats,
 } from "../game/stats";
 import type {
+  ChallengeEntry,
   ChallengeQueue,
   CharacterStats,
   FeedbackState,
   HandStats,
+  KeyboardLayoutId,
   PendingRetry,
   TrainingMode,
   TypingFontPresetId,
@@ -66,28 +70,48 @@ import type {
 import {
   readStoredBoolean,
   readStoredCharacterStats,
+  readStoredKeyboardLayout,
   readStoredNumber,
   readStoredTrainingMode,
   readStoredTypingFontPreset,
   writeStoredValue,
 } from "../storage/persistence";
 
+const placeholderChallenge: ChallengeEntry = {
+  character: "a",
+  group: "left",
+  keyId: "key-a",
+  requiresShift: false,
+};
+
+const placeholderQueue: ChallengeQueue = {
+  current: placeholderChallenge,
+  upcoming: [],
+};
+
 /**
  * 타이핑 훈련 세션의 상태, 입력 처리, 피드백, 출제 큐 갱신을 관리한다.
  * @returns 화면 컴포넌트에 전달할 반응형 상태와 핸들러
  */
 export function createGameSession() {
+  const initialLayout = readStoredKeyboardLayout();
+  const initialMode = readStoredTrainingMode();
+  const initialStats = readStoredCharacterStats();
+  const [keyboardLayout, setKeyboardLayoutState] = createSignal<
+    KeyboardLayoutId | null
+  >(initialLayout);
   const [trainingMode, setTrainingMode] = createSignal<TrainingMode>(
-    readStoredTrainingMode(),
+    initialMode,
   );
   const [handStats, setHandStats] = createSignal<HandStats>(
     createEmptyHandStats(),
   );
-  const [characterStats, setCharacterStats] = createSignal<CharacterStats>(
-    readStoredCharacterStats(),
-  );
+  const [characterStats, setCharacterStats] =
+    createSignal<CharacterStats>(initialStats);
   const [challengeQueue, setChallengeQueue] = createSignal<ChallengeQueue>(
-    createChallengeQueue(readStoredTrainingMode(), readStoredCharacterStats()),
+    initialLayout
+      ? createChallengeQueue(initialMode, initialStats, initialLayout)
+      : placeholderQueue,
   );
   const [pendingRetries, setPendingRetries] = createSignal<PendingRetry[]>([]);
   const [score, setScore] = createSignal(0);
@@ -132,7 +156,7 @@ export function createGameSession() {
   const [feedback, setFeedback] = createSignal<FeedbackState>({
     label: "READY",
     tone: "ready",
-    detail: "보이는 문자를 그대로 입력하세요",
+    detail: "Type the character shown",
   });
 
   let challengeStartedAt = 0;
@@ -145,7 +169,7 @@ export function createGameSession() {
   let challengeCardEl: HTMLDivElement | undefined;
 
   const canAcceptInput = createMemo(
-    () => endlessModeEnabled() || gauge() > 0,
+    () => keyboardLayout() !== null && (endlessModeEnabled() || gauge() > 0),
   );
   const isRunning = createMemo(() => hasStarted() && canAcceptInput());
   const selectedFontPreset = createMemo(
@@ -153,6 +177,21 @@ export function createGameSession() {
       typingFontPresets.find((preset) => preset.id === selectedFontPresetId()) ??
       typingFontPresets[0],
   );
+  const keyboardRows = createMemo(() => {
+    const layoutId = keyboardLayout();
+
+    return layoutId ? getKeyboardRows(layoutId) : [];
+  });
+  const keyboardKeyMap = createMemo(() => {
+    const layoutId = keyboardLayout();
+
+    return layoutId ? getKeyboardKeyMap(layoutId) : {};
+  });
+  const keyboardKeys = createMemo(() => {
+    const layoutId = keyboardLayout();
+
+    return layoutId ? getKeyboardKeys(layoutId) : [];
+  });
   const challenge = createMemo(() => challengeQueue().current);
   const upcomingChallenges = createMemo(() => challengeQueue().upcoming);
   const previewOpacities = createMemo(() => {
@@ -171,7 +210,7 @@ export function createGameSession() {
   });
   const keyboardShiftKeyId = createMemo(() => {
     const current = challenge();
-    const activeKeyboardKey = keyboardKeyMap[current.keyId];
+    const activeKeyboardKey = keyboardKeyMap()[current.keyId];
 
     return current.requiresShift &&
       activeKeyboardKey?.kind === "char" &&
@@ -183,7 +222,7 @@ export function createGameSession() {
     const nextRiskMap: Record<string, number> = {};
     const stats = characterStats();
 
-    keyboardKeys.forEach((key) => {
+    keyboardKeys().forEach((key) => {
       if (key.kind !== "char") {
         return;
       }
@@ -370,6 +409,7 @@ export function createGameSession() {
    */
   const resetGame = (nextMode: TrainingMode = trainingMode()) => {
     const nextModeOption = getModeOption(nextMode);
+    const layoutId = keyboardLayout();
 
     if (missLockTimer !== null) {
       window.clearTimeout(missLockTimer);
@@ -380,7 +420,11 @@ export function createGameSession() {
     challengeStartedAt = Date.now();
     setTrainingMode(nextMode);
     setHandStats(createEmptyHandStats());
-    setChallengeQueue(createChallengeQueue(nextMode, characterStats()));
+    setChallengeQueue(
+      layoutId
+        ? createChallengeQueue(nextMode, characterStats(), layoutId)
+        : placeholderQueue,
+    );
     setPendingRetries([]);
     setScore(0);
     setStreak(0);
@@ -393,8 +437,18 @@ export function createGameSession() {
     setFeedback({
       label: "READY",
       tone: "ready",
-      detail: `${nextModeOption.label} 모드로 훈련을 시작합니다`,
+      detail: `Starting ${nextModeOption.label} mode training`,
     });
+  };
+
+  /**
+   * 키보드 레이아웃을 저장하고 세션을 새 레이아웃 기준으로 재시작한다.
+   * @param nextLayout us 또는 jis
+   */
+  const setKeyboardLayout = (nextLayout: KeyboardLayoutId) => {
+    setKeyboardLayoutState(nextLayout);
+    writeStoredValue(keyboardLayoutStorageKey, nextLayout);
+    resetGame(trainingMode());
   };
 
   onMount(() => {
@@ -504,12 +558,12 @@ export function createGameSession() {
               ? {
                   label: "TIME OUT",
                   tone: "timeout",
-                  detail: "0%까지 버텼지만 무한모드로 계속 진행합니다",
+                  detail: "Reached 0%, continuing in Endless mode",
                 }
               : {
                   label: "TIME OUT",
                   tone: "gameover",
-                  detail: "게이지가 모두 소진되었습니다",
+                  detail: "Gauge depleted",
                 },
           );
         }
@@ -538,6 +592,10 @@ export function createGameSession() {
       }
 
       if (!canAcceptInput() || isInputLocked() || event.key === "Shift") {
+        return;
+      }
+
+      if (keyboardLayout() === null) {
         return;
       }
 
@@ -575,6 +633,7 @@ export function createGameSession() {
           challengeQueue(),
           trainingMode(),
           nextCharacterStats,
+          keyboardLayout()!,
           pendingRetries(),
           Date.now(),
         );
@@ -681,17 +740,17 @@ export function createGameSession() {
             ? {
                 label: "TIME OUT",
                 tone: "timeout",
-                detail: "0%까지 버텼지만 무한모드로 계속 진행합니다",
+                detail: "Reached 0%, continuing in Endless mode",
               }
             : {
                 label: "TIME OUT",
                 tone: "gameover",
-                detail: "게이지가 모두 소진되었습니다",
+                detail: "Gauge depleted",
               }
           : {
               label: "MISS",
               tone: "miss",
-              detail: `${getGroupLabel(currentChallenge.group)} 문제에서 "${pressedKey}" 입력, 1초간 입력 잠금`,
+              detail: `${getGroupLabel(currentChallenge.group)}: typed "${pressedKey}", input locked for 1s`,
             },
       );
       feedbackAudio.triggerAudioFeedback("miss");
@@ -725,7 +784,9 @@ export function createGameSession() {
     isInputLocked,
     isRunning,
     keyboardHintsVisible,
+    keyboardLayout,
     keyboardPanelVisible,
+    keyboardRows,
     keyboardShiftKeyId,
     keyRiskMap,
     lockRemainingMs,
@@ -736,6 +797,7 @@ export function createGameSession() {
     selectedFontPresetId,
     setEndlessModeEnabled,
     setKeyboardHintsVisible,
+    setKeyboardLayout,
     setKeyboardPanelVisible,
     setSelectedFontPresetId,
     setSoundEnabled,

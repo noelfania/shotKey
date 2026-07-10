@@ -16,7 +16,7 @@ export function getRewardBySpeed(elapsedMs: number) {
       feedback: {
         label: "PERFECT",
         tone: "perfect" as const,
-        detail: `${elapsedMs}ms 반응`,
+        detail: `${elapsedMs}ms`,
       },
     };
   }
@@ -28,7 +28,7 @@ export function getRewardBySpeed(elapsedMs: number) {
       feedback: {
         label: "GOOD",
         tone: "good" as const,
-        detail: `${elapsedMs}ms 반응`,
+        detail: `${elapsedMs}ms`,
       },
     };
   }
@@ -39,7 +39,7 @@ export function getRewardBySpeed(elapsedMs: number) {
     feedback: {
       label: "OK",
       tone: "ok" as const,
-      detail: `${elapsedMs}ms 반응`,
+      detail: `${elapsedMs}ms`,
     },
   };
-}
+}

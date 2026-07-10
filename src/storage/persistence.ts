@@ -1,5 +1,7 @@
 import {
   characterStatsStorageKey,
+  keyboardLayoutOptions,
+  keyboardLayoutStorageKey,
   modeOptions,
   recentHistoryLimit,
   themeStorageKey,
@@ -11,6 +13,7 @@ import type {
   AppTheme,
   CharacterStat,
   CharacterStats,
+  KeyboardLayoutId,
   RecentOutcome,
   TrainingMode,
   TypingFontPresetId,
@@ -188,6 +191,33 @@ export function readStoredTypingFontPreset() {
   }
 
   return typingFontPresets[0].id;
+}
+
+/**
+ * 저장값이 유효한 키보드 레이아웃인지 판별한다.
+ * @param value localStorage 등 외부에서 읽어온 문자열 값
+ * @returns us 또는 jis이면 true
+ */
+function isKeyboardLayoutId(value: string): value is KeyboardLayoutId {
+  return keyboardLayoutOptions.some((option) => option.id === value);
+}
+
+/**
+ * 마지막에 선택한 키보드 레이아웃을 읽어온다.
+ * @returns 저장값이 없거나 잘못되면 null (모달 표시용)
+ */
+export function readStoredKeyboardLayout(): KeyboardLayoutId | null {
+  if (!canUseStorage()) {
+    return null;
+  }
+
+  const storedValue = window.localStorage.getItem(keyboardLayoutStorageKey);
+
+  if (storedValue !== null && isKeyboardLayoutId(storedValue)) {
+    return storedValue;
+  }
+
+  return null;
 }
 
 /**

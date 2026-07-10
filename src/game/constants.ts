@@ -1,4 +1,8 @@
-import type { ModeOption, TypingFontPreset } from "./types";
+import type {
+  KeyboardLayoutId,
+  ModeOption,
+  TypingFontPreset,
+} from "./types";
 
 export const gaugeMax = 100;
 export const startingGauge = 100;
@@ -30,7 +34,16 @@ export const bestScoreStorageKey = "shot-key:best-score";
 export const bestStreakStorageKey = "shot-key:best-streak";
 export const bestSurvivalStorageKey = "shot-key:best-survival-ms";
 export const themeStorageKey = "shot-key:theme";
+export const keyboardLayoutStorageKey = "shot-key:keyboard-layout";
 export const keycapFlashDurationMs = 180;
+
+export const keyboardLayoutOptions: {
+  id: KeyboardLayoutId;
+  label: string;
+}[] = [
+  { id: "us", label: "US QWERTY" },
+  { id: "jis", label: "Japanese" },
+];
 
 export const typingFontPresets: TypingFontPreset[] = [
   {
@@ -49,20 +62,20 @@ export const typingFontPresets: TypingFontPreset[] = [
 export const modeOptions: ModeOption[] = [
   {
     value: "all",
-    label: "전체",
+    label: "All",
     shortLabel: "ALL",
-    description: "영문 키보드 전체를 고르게 훈련합니다.",
+    description: "Train the full keyboard evenly.",
   },
   {
     value: "left",
-    label: "왼손",
+    label: "Left",
     shortLabel: "L",
-    description: "왼손으로 입력하는 기본/Shift 문자를 함께 훈련합니다.",
+    description: "Train base and Shift characters for the left hand.",
   },
   {
     value: "right",
-    label: "오른손",
+    label: "Right",
     shortLabel: "R",
-    description: "오른손으로 입력하는 기본/Shift 문자를 함께 훈련합니다.",
+    description: "Train base and Shift characters for the right hand.",
   },
 ];
