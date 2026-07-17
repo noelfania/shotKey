@@ -1,12 +1,12 @@
 ---
 status: active
 audience: developer
-verified: 2026-07-10
+verified: 2026-07-17
 ---
 
 # localStorage 키
 
-정의: [`src/game/constants.ts`](../../src/game/constants.ts)
+정의: [`src/game/constants.ts`](../../src/game/constants.ts) (PC), [`src/mobile-kana/hooks/createKanaSession.ts`](../../src/mobile-kana/hooks/createKanaSession.ts) (카나)
 
 | 키 | 저장 내용 |
 |----|-----------|
@@ -24,5 +24,6 @@ verified: 2026-07-10
 | `shot-key:best-survival-ms` | 최고 버틴 시간(ms) |
 | `shot-key:theme` | `light` \| `dark` |
 | `shot-key:keyboard-layout` | `us` \| `jis` (없으면 선택 모달) |
+| `shot-key:kana-script` | `hiragana` \| `katakana` (모바일 카나) |
 
 읽기/쓰기: [`src/storage/persistence.ts`](../../src/storage/persistence.ts)

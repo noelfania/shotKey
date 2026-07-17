@@ -1,0 +1,240 @@
+.kana-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 16px;
+  box-sizing: border-box;
+  background: var(--app-bg, #f4f7fb);
+  color: var(--strong-text, #142033);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.kana-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  width: min(480px, 100%);
+  margin: 0 auto;
+}
+
+.kana-challenge {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kana-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.kana-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: var(--panel-bg, rgba(255, 255, 255, 0.72));
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
+}
+
+.kana-stat-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-text, #6b7a90);
+}
+
+.kana-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.kana-prompt {
+  padding: 20px 16px 16px;
+  border-radius: 24px;
+  text-align: center;
+  background: var(--panel-bg, rgba(255, 255, 255, 0.72));
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.kana-prompt.is-hit {
+  border-color: rgba(109, 247, 193, 0.55);
+}
+
+.kana-prompt.is-miss,
+.kana-prompt.is-locked {
+  border-color: rgba(255, 96, 96, 0.55);
+}
+
+.kana-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  min-height: 88px;
+}
+
+.kana-current {
+  font-size: clamp(56px, 18vw, 84px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kana-upcoming {
+  font-size: clamp(22px, 7vw, 32px);
+  color: var(--muted-text, #6b7a90);
+  opacity: 0.55;
+}
+
+.kana-status {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #5eb7ff;
+}
+
+.kana-status-detail {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted-text, #6b7a90);
+}
+
+.kana-flick-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  padding: 10px;
+  border-radius: 24px;
+  background: var(--panel-bg, rgba(255, 255, 255, 0.72));
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
+}
+
+.kana-flick-pad.is-locked {
+  opacity: 0.72;
+}
+
+.kana-flick-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.kana-flick-key {
+  appearance: none;
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.1));
+  border-radius: 18px;
+  min-height: 78px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--keycap-bg, rgba(255, 255, 255, 0.92));
+  color: inherit;
+  font: inherit;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.kana-flick-key.is-spacer {
+  visibility: hidden;
+  pointer-events: none;
+  border: none;
+  background: transparent;
+}
+
+.kana-flick-key:active {
+  transform: scale(0.98);
+  background: rgba(109, 247, 193, 0.16);
+}
+
+.kana-flick-mid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 4px;
+}
+
+.kana-flick-center {
+  flex: 1;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kana-flick-hint {
+  min-height: 14px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--muted-text, #6b7a90);
+}
+
+.kana-flick-hint.is-left,
+.kana-flick-hint.is-right {
+  width: 1.2em;
+  text-align: center;
+}
+
+.kana-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  width: min(480px, 100%);
+  margin: 12px auto 0;
+}
+
+.kana-footer-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.kana-footer-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted-text, #6b7a90);
+}
+
+.kana-footer-button,
+.kana-restart-button {
+  appearance: none;
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.12));
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: var(--panel-bg, rgba(255, 255, 255, 0.72));
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.kana-footer-button.is-active {
+  color: #06101f;
+  background: linear-gradient(135deg, #8be9fd, #6df7c1);
+  border-color: transparent;
+}
+
+.kana-restart-button {
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.kana-shell .app-build-meta-bar {
+  position: static;
+  margin-bottom: 8px;
+}

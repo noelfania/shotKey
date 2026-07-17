@@ -8,10 +8,20 @@
 
 ### Added
 
+- Kana flick pad punctuation key (`、` / `?` / `。` / `!`)
+- `や` flick directions: `ゆ` up, `よ` down, `「` left, `」` right
+- `わ` flick right: `ー`
+
+## [1.1.0] - 2026-07-17
+
+### Added
+
+- Mobile kana minigame (`src/mobile-kana/`): hiragana/katakana gojuon flick pad; entry via coarse pointer, narrow viewport, or `?mode=kana`
 - US QWERTY / Japanese (JIS) keyboard layouts with first-run selection modal
 - Footer Layout button to change keyboard layout anytime
 - JIS Enter keycap rendered as an L-shape (`jis-enter` + `jis-enter-slot`, fixed key unit)
 - `docs/reference/keyboard-layout-extensibility.md` — 향후 레이아웃 추가 가이드
+- `docs/reference/kana-minigame-rules.md` — 모바일 카나 규칙
 - `docs/` 폴더 문서 구조 (development, operations, planning, reference)
 - 게임 규칙·코딩 규칙·배포 절차 docs 이전, `.cursor` rules link-only화
 

@@ -16,6 +16,7 @@ alwaysApply: true
 | 주제 | 경로 |
 |------|------|
 | 게임·UI 규칙 | [docs/reference/gameplay-rules.md](docs/reference/gameplay-rules.md) |
+| 모바일 카나 | [docs/reference/kana-minigame-rules.md](docs/reference/kana-minigame-rules.md) |
 | 코딩·주석 | [docs/development/coding-standards.md](docs/development/coding-standards.md) |
 | 로컬 개발 | [docs/development/local-setup.md](docs/development/local-setup.md) |
 | push 전 검증 | [docs/development/verify-before-push.md](docs/development/verify-before-push.md) |

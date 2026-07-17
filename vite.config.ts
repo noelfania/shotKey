@@ -11,6 +11,10 @@ export default defineConfig({
   plugins: [solid()],
   // GitHub Pages 프로젝트 사이트: https://<user>.github.io/shotKey/
   base: "/shotKey/",
+  server: {
+    port: 34567,
+    strictPort: true,
+  },
   define: {
     __APP_VERSION__: JSON.stringify(packageJson.version),
     __APP_BUILD_DATE__: JSON.stringify(

@@ -1,0 +1,65 @@
+import type { Accessor } from "solid-js";
+import type { KanaScript } from "../game/types";
+
+type KanaFooterProps = {
+  script: Accessor<KanaScript>;
+  setScript: (script: KanaScript) => void;
+  soundEnabled: Accessor<boolean>;
+  setSoundEnabled: (enabled: boolean) => void;
+  onRestart: () => void;
+};
+
+/**
+ * 히라/카타 토글·사운드·재시작 컨트롤.
+ */
+export function KanaFooter(props: KanaFooterProps) {
+  return (
+    <footer class="kana-footer">
+      <div class="kana-footer-group" role="group" aria-label="Script">
+        <span class="kana-footer-label">SCRIPT</span>
+        <button
+          type="button"
+          classList={{
+            "kana-footer-button": true,
+            "is-active": props.script() === "hiragana",
+          }}
+          onClick={() => props.setScript("hiragana")}
+        >
+          Hiragana
+        </button>
+        <button
+          type="button"
+          classList={{
+            "kana-footer-button": true,
+            "is-active": props.script() === "katakana",
+          }}
+          onClick={() => props.setScript("katakana")}
+        >
+          Katakana
+        </button>
+      </div>
+
+      <div class="kana-footer-group" role="group" aria-label="Feedback">
+        <span class="kana-footer-label">SOUND</span>
+        <button
+          type="button"
+          classList={{
+            "kana-footer-button": true,
+            "is-active": props.soundEnabled(),
+          }}
+          onClick={() => props.setSoundEnabled(!props.soundEnabled())}
+        >
+          Sound
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="kana-restart-button"
+        onClick={() => props.onRestart()}
+      >
+        Restart
+      </button>
+    </footer>
+  );
+}
