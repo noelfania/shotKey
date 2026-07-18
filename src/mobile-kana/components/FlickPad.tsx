@@ -81,11 +81,9 @@ function FlickKey(props: FlickKeyProps) {
       onContextMenu={(event) => event.preventDefault()}
     >
       <span class="kana-flick-hint is-up">{cell().up ?? ""}</span>
-      <span class="kana-flick-mid">
-        <span class="kana-flick-hint is-left">{cell().left ?? ""}</span>
-        <span class="kana-flick-center">{cell().center ?? ""}</span>
-        <span class="kana-flick-hint is-right">{cell().right ?? ""}</span>
-      </span>
+      <span class="kana-flick-hint is-left">{cell().left ?? ""}</span>
+      <span class="kana-flick-center">{cell().center ?? ""}</span>
+      <span class="kana-flick-hint is-right">{cell().right ?? ""}</span>
       <span class="kana-flick-hint is-down">{cell().down ?? ""}</span>
     </button>
   );

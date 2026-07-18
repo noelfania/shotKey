@@ -16,6 +16,11 @@
 - `や` flick directions: `ゆ` up, `よ` down, `「` left, `」` right
 - `わ` flick right: `ー`
 
+### Changed
+
+- Kana pad pinned to bottom third; BuildMeta + script/sound controls at top
+- Flick keycap grid so hint glyphs no longer overflow the key
+
 ## [1.1.0] - 2026-07-17
 
 ### Added
