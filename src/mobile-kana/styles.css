@@ -1,63 +1,73 @@
 .kana-shell {
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 12px 12px 16px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   background: var(--app-bg, #f4f7fb);
   color: var(--strong-text, #142033);
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
+  overscroll-behavior: none;
 }
 
 .kana-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   min-height: 0;
-  width: min(480px, 100%);
+  width: 100%;
+  max-width: 480px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .kana-challenge {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
 
+/* Score / Streak: 한 줄 컴팩트 */
 .kana-stats {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .kana-stat {
   flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px;
-  border-radius: 16px;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
 }
 
 .kana-stat-label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted-text, #6b7a90);
 }
 
 .kana-stat-value {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 1;
 }
 
 .kana-prompt {
-  padding: 20px 16px 16px;
-  border-radius: 24px;
+  padding: 10px 12px 8px;
+  border-radius: 16px;
   text-align: center;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
@@ -79,43 +89,44 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 16px;
-  min-height: 88px;
+  gap: 12px;
+  min-height: 0;
 }
 
 .kana-current {
-  font-size: clamp(56px, 18vw, 84px);
+  font-size: clamp(40px, 12vw, 64px);
   font-weight: 700;
   line-height: 1;
 }
 
 .kana-upcoming {
-  font-size: clamp(22px, 7vw, 32px);
+  font-size: clamp(16px, 5vw, 24px);
   color: var(--muted-text, #6b7a90);
   opacity: 0.55;
 }
 
 .kana-status {
-  margin: 8px 0 0;
-  font-size: 14px;
+  margin: 4px 0 0;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #5eb7ff;
 }
 
 .kana-status-detail {
-  margin: 4px 0 0;
-  font-size: 13px;
-  color: var(--muted-text, #6b7a90);
+  display: none;
 }
 
+/* 플릭 패드가 남은 세로 공간을 채움 */
 .kana-flick-pad {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: auto;
-  padding: 10px;
-  border-radius: 24px;
+  gap: 6px;
+  min-height: 0;
+  margin-top: 0;
+  padding: 6px;
+  border-radius: 16px;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
 }
@@ -125,17 +136,20 @@
 }
 
 .kana-flick-row {
+  flex: 1 1 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
+  min-height: 0;
 }
 
 .kana-flick-key {
   appearance: none;
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.1));
-  border-radius: 18px;
-  min-height: 78px;
-  padding: 6px;
+  border-radius: 14px;
+  min-height: 0;
+  height: 100%;
+  padding: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,63 +178,66 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 4px;
+  gap: 2px;
 }
 
 .kana-flick-center {
   flex: 1;
   text-align: center;
-  font-size: 28px;
+  font-size: clamp(20px, 7vw, 28px);
   font-weight: 700;
   line-height: 1;
 }
 
 .kana-flick-hint {
-  min-height: 14px;
-  font-size: 12px;
+  min-height: 12px;
+  font-size: 11px;
   line-height: 1;
   color: var(--muted-text, #6b7a90);
 }
 
 .kana-flick-hint.is-left,
 .kana-flick-hint.is-right {
-  width: 1.2em;
+  width: 1.1em;
   text-align: center;
 }
 
 .kana-footer {
+  flex: 0 0 auto;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 10px;
-  width: min(480px, 100%);
-  margin: 12px auto 0;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
 .kana-footer-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .kana-footer-label {
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   color: var(--muted-text, #6b7a90);
 }
 
-.kana-footer-button,
-.kana-restart-button {
+.kana-footer-button {
   appearance: none;
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.12));
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   color: inherit;
   font: inherit;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .kana-footer-button.is-active {
@@ -229,12 +246,24 @@
   border-color: transparent;
 }
 
-.kana-restart-button {
+.kana-theme-toggle {
+  appearance: none;
   margin-left: auto;
-  font-weight: 600;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.12));
+  background: var(--panel-bg, rgba(255, 255, 255, 0.72));
+  color: var(--muted-text, #6b7a90);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
 }
 
-.kana-shell .app-build-meta-bar {
-  position: static;
-  margin-bottom: 8px;
+.kana-theme-toggle-icon {
+  width: 18px;
+  height: 18px;
 }

@@ -8,6 +8,7 @@ verified: 2026-07-04
 
 ## 완료 (CHANGELOG 참고)
 
+- v1.2.0: 다국어 SEO, 카나 모바일 풀스크린 UX — [CHANGELOG.md](../../CHANGELOG.md)
 - v1.1.0: US/JIS 레이아웃, 모바일 카나 미니게임, ShotKey 리네임 — [CHANGELOG.md](../../CHANGELOG.md)
 - v1.0.0: SolidJS, 모듈 분리, 테마, BuildMeta, 대소문자 가독성 — [CHANGELOG.md](../../CHANGELOG.md)
 

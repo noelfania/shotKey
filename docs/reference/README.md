@@ -6,5 +6,6 @@
 - [architecture.md](architecture.md) — `src/` 모듈 맵
 - [keyboard-layout-extensibility.md](keyboard-layout-extensibility.md) — 레이아웃 추가·확장 가이드
 - [kana-minigame-rules.md](kana-minigame-rules.md) — 모바일 카나 미니게임 규칙
+- [seo.md](seo.md) — canonical, sitemap, Search Console
 - [storage-keys.md](storage-keys.md) — localStorage 키
 - [deployment-facts.md](deployment-facts.md) — URL, base, CI 트리거 (사실만)

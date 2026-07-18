@@ -58,6 +58,7 @@ npm run preview
 - [ ] Pages Source = GitHub Actions
 - [ ] Actions 성공
 - [ ] `https://noelfania.github.io/shotKey/` 로드 확인
+- [ ] (선택) Search Console에 sitemap 제출 — [seo.md](../../reference/seo.md)
 
 ## 최초 1회 설정
 

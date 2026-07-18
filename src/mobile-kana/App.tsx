@@ -1,4 +1,4 @@
-import { BuildMeta } from "../components/BuildMeta";
+import { onCleanup, onMount } from "solid-js";
 import { useTheme } from "../hooks/useTheme";
 import { FlickPad } from "./components/FlickPad";
 import { KanaChallenge } from "./components/KanaChallenge";
@@ -8,14 +8,25 @@ import "./styles.css";
 
 /**
  * 모바일 히라가나/카타카나 플릭 미니게임 셸.
+ * 뷰포트에 고정(스크롤 없음). BuildMeta·Restart는 숨김.
  */
 export default function KanaApp() {
   const theme = useTheme();
   const session = createKanaSession();
 
+  onMount(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previousOverscroll = document.documentElement.style.overscrollBehavior;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overscrollBehavior = "none";
+    onCleanup(() => {
+      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overscrollBehavior = previousOverscroll;
+    });
+  });
+
   return (
     <main class="kana-shell">
-      <BuildMeta theme={theme.theme} setTheme={theme.setTheme} />
       <div class="kana-main">
         <KanaChallenge
           character={() => session.challenge().character}
@@ -35,7 +46,8 @@ export default function KanaApp() {
           setScript={session.setScript}
           soundEnabled={session.soundEnabled}
           setSoundEnabled={session.setSoundEnabled}
-          onRestart={session.restart}
+          theme={theme.theme}
+          setTheme={theme.setTheme}
         />
       </div>
     </main>

@@ -22,6 +22,7 @@ alwaysApply: true
 | push 전 검증 | [docs/development/verify-before-push.md](docs/development/verify-before-push.md) |
 | 배포 절차 | [docs/operations/routine/deploy-github-pages.md](docs/operations/routine/deploy-github-pages.md) |
 | 아키텍처 | [docs/reference/architecture.md](docs/reference/architecture.md) |
+| SEO | [docs/reference/seo.md](docs/reference/seo.md) |
 | storage 키 | [docs/reference/storage-keys.md](docs/reference/storage-keys.md) |
 | 문서 지도 | [docs/README.md](docs/README.md) |
 

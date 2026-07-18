@@ -6,8 +6,12 @@
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-18
+
 ### Added
 
+- Multilingual SEO: meta/OG/Twitter/JSON-LD, `robots.txt`, `sitemap.xml`, `og-image.png`
+- Kana mobile layout: viewport fill (no scroll), compact Score/Streak, hide Restart
 - Kana flick pad punctuation key (`、` / `?` / `。` / `!`)
 - `や` flick directions: `ゆ` up, `よ` down, `「` left, `」` right
 - `わ` flick right: `ー`
