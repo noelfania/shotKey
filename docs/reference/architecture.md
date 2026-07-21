@@ -1,7 +1,7 @@
 ---
 status: active
 audience: developer
-verified: 2026-07-17
+verified: 2026-07-21
 ---
 
 # 아키텍처
@@ -39,7 +39,7 @@ src/
   mobile-kana/          # 모바일 카나 미니게임 (쿼티 로직 비재사용)
     App.tsx
     styles.css
-    game/               # gojuon, challenge
+    game/               # gojuon, challenge, kanaStats
     input/              # flickMap, useFlickPad
     hooks/createKanaSession.ts
     components/         # KanaChallenge, FlickPad, KanaFooter
@@ -47,16 +47,17 @@ src/
 
 ## 데이터 흐름 (PC 요약)
 
-1. `createGameSession` — signal 상태, `keydown` 입력, gauge decay, `keyboardLayout` id
+1. `createGameSession` — signal 상태, `keydown` 입력, focus decay, `keyboardLayout` id
 2. `keyboardLayout` → `getChallengePool(layoutId)` / `getKeyboardRows(layoutId)`
 3. `challengeQueue` — 가중 랜덤 출제, MISS 재출제 삽입
 4. `characterStats` — localStorage 동기화, 약점 키 색상·재출제 가중치
 
 ## 데이터 흐름 (카나 요약)
 
-1. `createKanaSession` — 출제·점수·스크립트 토글 (keydown 없음)
-2. `FlickPad` pointer → `flickMap`으로 문자 확정 → `submitCharacter`
-3. 테마·BuildMeta만 PC와 공유
+1. `createKanaSession` — 출제·스크립트 토글·문자 통계 (keydown 없음)
+2. `FlickPad` pointer → `flickMap`으로 문자 확정 → `submitCharacter` → `kanaStats` 갱신
+3. `characterRiskMap` / `weakestCharacters` → 플릭 개별 글자 색·Most missed 랭킹
+4. 테마·BuildMeta·효과음 모듈·공통 `App.css`를 PC와 공유(세션 상태는 공유하지 않음)
 
 ## 관련 문서
 

@@ -40,14 +40,14 @@ export default function KanaApp() {
         <KanaChallenge
           character={() => session.challenge().character}
           upcoming={session.upcoming}
-          score={session.score}
-          streak={session.streak}
+          weakestCharacters={session.weakestCharacters}
           feedback={session.feedback}
           isInputLocked={session.isInputLocked}
         />
         <FlickPad
           script={session.script}
           isInputLocked={session.isInputLocked}
+          characterRiskMap={session.characterRiskMap}
           onCharacter={session.submitCharacter}
         />
       </div>

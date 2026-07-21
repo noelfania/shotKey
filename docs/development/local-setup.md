@@ -1,7 +1,7 @@
 ---
 status: active
 audience: developer
-verified: 2026-07-17
+verified: 2026-07-21
 ---
 
 # 로컬 개발
@@ -26,7 +26,12 @@ npm run dev
 기본 주소: [http://localhost:34567/shotKey/](http://localhost:34567/shotKey/)  
 (`vite.config.ts`의 `server.port`. 포트가 쓰 중이면 실패 — `strictPort: true`)
 
-브라우저에서 Vite dev 서버 URL을 열고, `keydown`으로 즉시 플레이합니다.
+기본 진입은 디바이스 특성에 따라 PC 또는 모바일 카나 모드를 고릅니다.
+
+- PC 강제: [http://localhost:34567/shotKey/?mode=pc](http://localhost:34567/shotKey/?mode=pc)
+- 모바일 카나 강제: [http://localhost:34567/shotKey/?mode=kana](http://localhost:34567/shotKey/?mode=kana)
+
+PC 모드는 `keydown`, 카나 모드는 온스크린 플릭 패드의 pointer 입력으로 플레이합니다.
 
 ## 프로덕션 빌드 미리보기
 

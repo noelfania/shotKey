@@ -1,7 +1,7 @@
 ---
 status: active
 audience: operations
-verified: 2026-07-04
+verified: 2026-07-21
 ---
 
 # 배포 사실 (reference)

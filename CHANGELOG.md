@@ -1,10 +1,26 @@
 # Changelog
 
-이 프로젝트의 주요 변경 사항을 기록합니다.
+All notable changes to this project are documented in this file.
 
-형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를 따릅니다.
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+**Language policy:** Existing history through v1.2.0 remains as written. New entries from v1.3.1 onward are written in English.
 
 ## [Unreleased]
+
+## [1.3.1] - 2026-07-21
+
+### Added
+
+- Kana per-character miss stats (hiragana/katakana storage keys), Most missed ranking, and per-glyph risk tint on the flick pad
+- Kana MISS lock hazard stripes (top/bottom only; does not cover current/upcoming glyphs)
+- README English rewrite with US / JIS / mobile kana screenshots
+- SEO copy for Japanese mobile kana flick / phone keyboard practice (EN · JA · KO)
+
+### Changed
+
+- Kana challenge preview: current glyph on the prompt vertical centerline; next 3 glyphs share the same font size
+- Removed kana Score/Streak HUD in favor of Most missed
 
 ## [1.2.0] - 2026-07-18
 

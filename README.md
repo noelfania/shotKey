@@ -1,23 +1,49 @@
 # ShotKey
 
-QWERTY 키보드 기준 영문 타이핑 훈련 웹앱
+Browser typing trainer for US QWERTY, Japanese JIS, and mobile Japanese kana flick practice.
 
-## 프리뷰
+## Live Demo
 
 https://noelfania.github.io/shotKey/
 
-## 개요
+## Features
 
-- 입력창 없이 `keydown`만으로 화면에 제시된 문자를 즉시 타이핑하며 반응 속도와 정확도를 훈련합니다.
-- **전체 / 왼손 / 오른손** 훈련 모드와 **무한모드**를 선택할 수 있습니다.
-- **PERFECT · GOOD · OK · MISS · TIME OUT** 판정과 **집중 게이지**로 세션을 진행합니다.
-- **자주 틀린 문자**는 몇 문제 뒤에 다시 출제되어 반복 학습합니다.
-- **자주 틀리거나 느린 키**는 키보드 패널에서 색이 짙어져 약점을 드러냅니다.
-- 효과음·시각효과·폰트·키보드 패널 표시 등 설정은 브라우저 `localStorage`에 저장됩니다.
-- **라이트 / 다크** 테마를 전환할 수 있습니다.
+- **US QWERTY** desktop practice driven only by `keydown` (no text field)
+- **Japanese JIS** layout with an L-shaped Enter keycap
+- **Mobile Japanese kana flick** minigame for hiragana / katakana (on-screen 10-key pad)
+- Judgment feedback (PERFECT · GOOD · OK · MISS · TIME OUT on desktop; HIT / MISS on kana)
+- Local-only character stats, weak-key highlighting, themes, and settings (`localStorage`)
+- No accounts, no server, no database
 
-## 문서
+## Screenshots
 
-- [docs/README.md](docs/README.md) — 개발·운영·계획·참고 문서 지도
-- [CHANGELOG.md](CHANGELOG.md) — 릴리스 변경 이력
-
+### US QWERTY (desktop)
+
+![ShotKey US QWERTY desktop typing trainer](docs/assets/screenshots/qwerty-us.png)
+
+### Japanese JIS (desktop)
+
+![ShotKey Japanese JIS desktop typing trainer](docs/assets/screenshots/qwerty-jis.png)
+
+### Mobile kana flick
+
+![ShotKey mobile Japanese kana flick practice](docs/assets/screenshots/kana-flick-mobile.png)
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+- Force desktop mode: `http://localhost:34567/shotKey/?mode=pc`
+- Force kana mode: `http://localhost:34567/shotKey/?mode=kana`
+
+See [docs/development/local-setup.md](docs/development/local-setup.md).
+
+## Documentation
+
+- [docs/README.md](docs/README.md) — documentation map
+- [CHANGELOG.md](CHANGELOG.md) — release history
+- [docs/reference/gameplay-rules.md](docs/reference/gameplay-rules.md) — desktop rules
+- [docs/reference/kana-minigame-rules.md](docs/reference/kana-minigame-rules.md) — mobile kana rules

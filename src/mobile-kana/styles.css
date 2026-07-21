@@ -57,49 +57,38 @@
   overflow: hidden;
 }
 
-/* Score / Streak: 한 줄 컴팩트 */
-.kana-stats {
-  display: flex;
-  gap: 8px;
-}
-
-.kana-stat {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
+/* 취약 문자 랭킹: 한 줄 + 말줄임 */
+.kana-most-missed {
+  flex: 0 0 auto;
+  min-width: 0;
   padding: 6px 10px;
   border-radius: 12px;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
 }
 
-.kana-stat-label {
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.kana-most-missed-text {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
   color: var(--muted-text, #6b7a90);
 }
 
-.kana-stat-value {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1;
-}
-
 .kana-prompt {
+  position: relative;
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: block;
   min-height: 0;
   padding: 10px 12px 8px;
   border-radius: 16px;
   text-align: center;
   background: var(--panel-bg, rgba(255, 255, 255, 0.72));
   border: 1px solid var(--keycap-border, rgba(20, 32, 51, 0.08));
+  overflow: hidden;
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease;
@@ -114,28 +103,138 @@
   border-color: rgba(255, 96, 96, 0.55);
 }
 
-.kana-line {
+/* MISS 잠금: 상·하 사선만 (문자 비가림) */
+.kana-lock-stripes {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.kana-lock-stripes::before,
+.kana-lock-stripes::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(18px, 5.5%, 28px);
+  background: repeating-linear-gradient(
+    135deg,
+    rgba(255, 181, 39, 0.9) 0 26px,
+    rgba(40, 18, 0, 0.84) 26px 52px
+  );
+  opacity: 0.78;
+  box-shadow:
+    0 0 22px rgba(255, 31, 77, 0.54),
+    inset 0 0 18px rgba(255, 106, 0, 0.28);
+  animation: kana-lock-stripe-pulse 0.6s ease-in-out infinite alternate;
+}
+
+.kana-lock-stripes::before {
+  top: 0;
+  border-bottom: 2px solid rgba(255, 31, 77, 0.88);
+  background-position: 0 0;
+  animation-name: kana-lock-stripe-slide-top, kana-lock-stripe-pulse;
+  animation-duration: 0.6s, 0.6s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: normal, alternate;
+}
+
+.kana-lock-stripes::after {
+  bottom: 0;
+  border-top: 2px solid rgba(255, 31, 77, 0.88);
+  background-position: 0 0;
+  animation-name: kana-lock-stripe-slide-bottom, kana-lock-stripe-pulse;
+  animation-duration: 0.6s, 0.6s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: normal, alternate;
+}
+
+@keyframes kana-lock-stripe-slide-top {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 52px 0;
+  }
+}
+
+@keyframes kana-lock-stripe-slide-bottom {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -52px 0;
+  }
+}
+
+@keyframes kana-lock-stripe-pulse {
+  from {
+    opacity: 0.62;
+  }
+  to {
+    opacity: 0.88;
+  }
+}
+
+/* 현재 문자: 프롬프트 박스의 정확한 세로·가로 중심 / 다음 3자: 동일 font-size */
+.kana-prompt-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  --kana-glyph-size: clamp(28px, min(11vw, 12dvh), 56px);
+}
+
+.kana-current-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-height: 0;
 }
 
 .kana-current {
-  font-size: clamp(40px, 12vw, 64px);
+  font-size: var(--kana-glyph-size);
   font-weight: 700;
   line-height: 1;
 }
 
+.kana-upcoming-slot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(6px, 2vw, 12px);
+  /* 현재 글자 반폭 + 여백만큼 오른쪽으로 밀기 */
+  margin-left: calc(var(--kana-glyph-size) * 0.55 + clamp(8px, 2.5vw, 16px));
+  max-width: calc(50% - var(--kana-glyph-size) * 0.55);
+  overflow: hidden;
+}
+
 .kana-upcoming {
-  font-size: clamp(16px, 5vw, 24px);
+  flex: 0 0 auto;
+  font-size: var(--kana-glyph-size);
+  font-weight: 700;
+  line-height: 1;
   color: var(--muted-text, #6b7a90);
-  opacity: 0.55;
+  opacity: var(--upcoming-opacity, 0.55);
 }
 
 .kana-status {
-  margin: 4px 0 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  z-index: 1;
+  margin: 0;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -210,6 +309,22 @@
 .kana-flick-key:active {
   transform: scale(0.98);
   background: rgba(109, 247, 193, 0.16);
+}
+
+.kana-flick-glyph {
+  --glyph-risk: 0;
+  --risk-rgb: 255, 77, 77;
+  border-radius: 6px;
+  padding: 1px 2px;
+  box-sizing: border-box;
+  color: color-mix(
+    in srgb,
+    rgb(var(--risk-rgb)) calc(var(--glyph-risk) * 100%),
+    currentColor
+  );
+  background: rgba(var(--risk-rgb), calc(var(--glyph-risk) * 0.22));
+  box-shadow: inset 0 0 0 1px
+    rgba(var(--risk-rgb), calc(var(--glyph-risk) * 0.28));
 }
 
 .kana-flick-center {
@@ -291,4 +406,11 @@
   color: #06101f;
   background: linear-gradient(135deg, #8be9fd, #6df7c1);
   border-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kana-lock-stripes::before,
+  .kana-lock-stripes::after {
+    animation: none;
+  }
 }

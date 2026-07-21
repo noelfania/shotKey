@@ -1,7 +1,7 @@
 ---
 status: active
 audience: developer
-verified: 2026-07-17
+verified: 2026-07-21
 ---
 
 # SEO
@@ -12,6 +12,18 @@ ShotKey는 GitHub Pages SPA다. 검색·공유용 메타는 [`index.html`](../..
 
 - 사이트: `https://noelfania.github.io/shotKey/`
 - `hreflang` en / ko / ja / x-default → 모두 동일 URL (별도 언어 경로 없음)
+
+## 검색 카피 범위
+
+`index.html` description / keywords / Open Graph / Twitter / JSON-LD에 다음을 **명시**한다.
+
+| 언어 | 예시 구문 |
+|------|-----------|
+| EN | Japanese mobile kana flick keyboard practice, Japanese phone keyboard practice |
+| JA | スマホかなフリック練習 |
+| KO | 일본어 모바일 자판 연습 |
+
+데스크톱 US/JIS QWERTY 연습과 함께 모바일 카나 플릭이 SEO 범위에 포함된다.
 
 ## 정적 파일
 

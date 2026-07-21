@@ -1,7 +1,7 @@
 ---
 status: active
 audience: operations
-verified: 2026-07-04
+verified: 2026-07-21
 ---
 
 # 배포 전 점검
@@ -18,6 +18,7 @@ verified: 2026-07-04
 - [ ] Vite `base` = `/shotKey/`
 - [ ] `npm run lint`
 - [ ] `npm run build`
+- [ ] `package.json`과 `package-lock.json`의 앱 버전 일치
 - [ ] `.github/workflows/pages.yml` — `main` push + `workflow_dispatch`, artifact `dist`
 - [ ] GitHub Pages Source = **GitHub Actions**
 

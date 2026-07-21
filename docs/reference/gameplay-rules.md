@@ -1,15 +1,15 @@
 ---
 status: active
 audience: developer
-verified: 2026-07-04
+verified: 2026-07-21
 ---
 
 # 게임·UI 규칙
 
 ## 서비스 목적
 
-- 영문 키보드(US QWERTY / Japanese JIS) 기준으로 단일 문자 입력 정확도와 반응 속도를 훈련하는 웹서비스
-- 입력창 없이 `keydown`만으로 플레이
+- 데스크톱 US QWERTY / Japanese JIS와 모바일 카나 플릭으로 단일 문자 입력 정확도와 반응 속도를 훈련하는 웹서비스
+- PC는 입력창 없이 `keydown`, 모바일 카나는 자체 온스크린 10키의 pointer 입력으로 플레이
 - 백엔드·계정 없이 브라우저 단독 SolidJS 프론트엔드
 
 ## 키보드 레이아웃

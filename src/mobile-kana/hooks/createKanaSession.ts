@@ -1,8 +1,20 @@
-import { createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import { createFeedbackAudio } from "../../audio/feedbackAudio";
 import { writeStoredValue } from "../../storage/persistence";
 import { buildUpcoming, pickRandomChallenge } from "../game/challenge";
-import type { KanaFeedback, KanaScript } from "../game/types";
+import {
+  buildKanaCharacterRiskMap,
+  getWeakestKanaCharacters,
+  readStoredKanaCharacterStats,
+  updateKanaStatsOnHit,
+  updateKanaStatsOnMiss,
+  writeStoredKanaCharacterStats,
+} from "../game/kanaStats";
+import type {
+  KanaCharacterStats,
+  KanaFeedback,
+  KanaScript,
+} from "../game/types";
 
 export const kanaScriptStorageKey = "shot-key:kana-script";
 export const kanaMissLockMs = 600;
@@ -32,19 +44,27 @@ export function createKanaSession() {
   const feedbackAudio = createFeedbackAudio();
   const initialScript = readStoredKanaScript();
   const initialChallenge = pickRandomChallenge(initialScript);
+  const initialStats = readStoredKanaCharacterStats(initialScript);
 
   const [script, setScriptState] = createSignal<KanaScript>(initialScript);
   const [challenge, setChallenge] = createSignal(initialChallenge);
   const [upcoming, setUpcoming] = createSignal(
     buildUpcoming(initialScript, initialChallenge.character),
   );
-  const [score, setScore] = createSignal(0);
-  const [streak, setStreak] = createSignal(0);
+  const [characterStats, setCharacterStats] =
+    createSignal<KanaCharacterStats>(initialStats);
   const [feedback, setFeedback] = createSignal<KanaFeedback>("ready");
   const [isInputLocked, setIsInputLocked] = createSignal(false);
   const [soundEnabled, setSoundEnabledState] = createSignal(true);
 
   let lockTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const characterRiskMap = createMemo(() =>
+    buildKanaCharacterRiskMap(characterStats()),
+  );
+  const weakestCharacters = createMemo(() =>
+    getWeakestKanaCharacters(characterStats(), 5),
+  );
 
   /**
    * 스크립트에 맞춰 출제·미리보기를 다시 뽑는다.
@@ -57,13 +77,20 @@ export function createKanaSession() {
   }
 
   /**
+   * 통계를 갱신하고 저장한다.
+   */
+  function persistStats(nextStats: KanaCharacterStats) {
+    setCharacterStats(nextStats);
+    writeStoredKanaCharacterStats(script(), nextStats);
+  }
+
+  /**
    * 히라가나/카타카나를 전환한다.
    */
   function setScript(next: KanaScript) {
     setScriptState(next);
     writeStoredValue(kanaScriptStorageKey, next);
-    setScore(0);
-    setStreak(0);
+    setCharacterStats(readStoredKanaCharacterStats(next));
     clearLock();
     reshuffle(next);
   }
@@ -101,8 +128,7 @@ export function createKanaSession() {
 
     const current = challenge().character;
     if (character === current) {
-      setScore((value) => value + 1);
-      setStreak((value) => value + 1);
+      persistStats(updateKanaStatsOnHit(characterStats(), current));
       setFeedback("hit");
       if (soundEnabled()) {
         feedbackAudio.triggerAudioFeedback("ok");
@@ -123,7 +149,7 @@ export function createKanaSession() {
       return;
     }
 
-    setStreak(0);
+    persistStats(updateKanaStatsOnMiss(characterStats(), current));
     setFeedback("miss");
     if (soundEnabled()) {
       feedbackAudio.triggerAudioFeedback("miss");
@@ -132,11 +158,9 @@ export function createKanaSession() {
   }
 
   /**
-   * 점수·출제를 초기화한다.
+   * 출제만 초기화한다. (누적 통계는 유지)
    */
   function restart() {
-    setScore(0);
-    setStreak(0);
     clearLock();
     reshuffle(script());
   }
@@ -154,8 +178,9 @@ export function createKanaSession() {
     setScript,
     challenge,
     upcoming,
-    score,
-    streak,
+    characterStats,
+    characterRiskMap,
+    weakestCharacters,
     feedback,
     isInputLocked,
     soundEnabled,

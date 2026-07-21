@@ -20,3 +20,20 @@ export type KanaChallenge = {
 };
 
 export type KanaFeedback = "ready" | "hit" | "miss";
+
+export type KanaRecentOutcome = "hit" | "miss";
+
+export type KanaCharacterStat = {
+  attempts: number;
+  misses: number;
+  recentOutcomes: KanaRecentOutcome[];
+};
+
+export type KanaCharacterStats = Record<string, KanaCharacterStat>;
+
+export type KanaWeakCharacter = {
+  character: string;
+  missRateLabel: string;
+  sampleLabel: string;
+  risk: number;
+};
