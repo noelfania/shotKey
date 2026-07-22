@@ -27,7 +27,7 @@ https://noelfania.github.io/shotKey/
 
 ### Mobile kana flick
 
-![ShotKey mobile Japanese kana flick practice](docs/assets/screenshots/kana-flick-mobile.png)
+<img src="docs/assets/screenshots/kana-flick-mobile.png" width="300" alt="ShotKey mobile Japanese kana flick practice">
 
 ## Development
 
