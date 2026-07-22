@@ -1,6 +1,10 @@
-import { For, type Accessor } from "solid-js";
+import { For, Match, Switch, type Accessor } from "solid-js";
 import type { FlickKeyId, KanaScript } from "../game/types";
-import { flickPadLayout, getFlickCell } from "../input/flickMap";
+import {
+  flickPadLayout,
+  getFlickCell,
+  type FlickPadCell,
+} from "../input/flickMap";
 import { createFlickPadController } from "../input/useFlickPad";
 
 type FlickPadProps = {
@@ -12,6 +16,7 @@ type FlickPadProps = {
 
 /**
  * 일본 10키 스타일 플릭 패드를 렌더링한다.
+ * 좌·우 기능키 자리는 문자 없는 스켈레톤으로만 채운다.
  */
 export function FlickPad(props: FlickPadProps) {
   const controller = createFlickPadController({
@@ -30,28 +35,65 @@ export function FlickPad(props: FlickPadProps) {
         {(row) => (
           <div class="kana-flick-row">
             <For each={row}>
-              {(keyId) => {
-                if (keyId === null) {
-                  return <div class="kana-flick-key is-spacer" aria-hidden="true" />;
-                }
-                return (
-                  <FlickKey
-                    keyId={keyId}
-                    script={props.script}
-                    characterRiskMap={props.characterRiskMap}
-                    onPointerDown={(event) =>
-                      controller.handlePointerDown(keyId, event)
-                    }
-                    onPointerUp={controller.handlePointerUp}
-                    onPointerCancel={controller.handlePointerCancel}
-                  />
-                );
-              }}
+              {(cell) => (
+                <PadCellView
+                  cell={cell}
+                  script={props.script}
+                  characterRiskMap={props.characterRiskMap}
+                  onPointerDown={(keyId, event) =>
+                    controller.handlePointerDown(keyId, event)
+                  }
+                  onPointerUp={controller.handlePointerUp}
+                  onPointerCancel={controller.handlePointerCancel}
+                />
+              )}
             </For>
           </div>
         )}
       </For>
     </section>
+  );
+}
+
+type PadCellViewProps = {
+  cell: FlickPadCell;
+  script: Accessor<KanaScript>;
+  characterRiskMap: Accessor<Record<string, number>>;
+  onPointerDown: (keyId: FlickKeyId, event: PointerEvent) => void;
+  onPointerUp: (event: PointerEvent) => void;
+  onPointerCancel: (event: PointerEvent) => void;
+};
+
+/**
+ * 스켈레톤·스페이서·실키를 분기한다.
+ */
+function PadCellView(props: PadCellViewProps) {
+  return (
+    <Switch
+      fallback={
+        <FlickKey
+          keyId={props.cell as FlickKeyId}
+          script={props.script}
+          characterRiskMap={props.characterRiskMap}
+          onPointerDown={(event) =>
+            props.onPointerDown(props.cell as FlickKeyId, event)
+          }
+          onPointerUp={props.onPointerUp}
+          onPointerCancel={props.onPointerCancel}
+        />
+      }
+    >
+      <Match when={props.cell === null}>
+        <div class="kana-flick-key is-spacer" aria-hidden="true" />
+      </Match>
+      <Match when={props.cell === "skeleton" || props.cell === "skeleton-tall"}>
+        <div
+          class="kana-flick-key is-skeleton"
+          classList={{ "is-skeleton-tall": props.cell === "skeleton-tall" }}
+          aria-hidden="true"
+        />
+      </Match>
+    </Switch>
   );
 }
 

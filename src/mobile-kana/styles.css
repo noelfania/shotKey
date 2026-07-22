@@ -4,7 +4,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+  /* 하단: 키 아래 여백(기존 26px의 2배) + home indicator */
+  padding: 8px 10px calc(52px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   background: var(--app-bg, #f4f7fb);
   color: var(--strong-text, #142033);
@@ -245,15 +246,18 @@
   display: none;
 }
 
-/* 플릭 패드: 화면 하단, 전체 높이의 1/3 */
+/* 플릭 패드: 하단 1/3, 5열(좌·우 스켈레톤 + 중앙 가나). display:contents로 Enter 2행 span */
 .kana-flick-pad {
   flex: 0 0 33.333dvh;
   height: 33.333dvh;
   max-height: 33.333dvh;
-  display: flex;
-  flex-direction: column;
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 6px;
   min-height: 0;
+  min-width: 0;
   margin-top: 0;
   padding: 6px;
   border-radius: 16px;
@@ -267,11 +271,7 @@
 }
 
 .kana-flick-row {
-  flex: 1 1 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  min-height: 0;
+  display: contents;
 }
 
 .kana-flick-key {
@@ -306,7 +306,18 @@
   background: transparent;
 }
 
-.kana-flick-key:active {
+/* iOS 기능키 자리: 문자 없는 키캡 모양만 (입력 불가) */
+.kana-flick-key.is-skeleton {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.45;
+}
+
+.kana-flick-key.is-skeleton-tall {
+  grid-row: span 2;
+}
+
+.kana-flick-key:active:not(.is-skeleton) {
   transform: scale(0.98);
   background: rgba(109, 247, 193, 0.16);
 }

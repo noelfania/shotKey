@@ -8,6 +8,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-07-22
+
+### Added
+
+- Google Search Console HTML ownership verification file (`public/google19a206f5b83a8f38.html`)
+- Decorative skeleton keycaps on the kana flick pad for iOS side-function / dakuten slots (no glyphs, no input)
+
+### Changed
+
+- Kana flick pad uses a 5-column grid (skeletons + center flick keys) and a taller bottom inset for home-indicator clearance
+
 ## [1.3.1] - 2026-07-21
 
 ### Added
