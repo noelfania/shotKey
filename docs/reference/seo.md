@@ -32,12 +32,14 @@ ShotKey는 GitHub Pages SPA다. 검색·공유용 메타는 [`index.html`](../..
 | `public/robots.txt` | `https://noelfania.github.io/shotKey/robots.txt` |
 | `public/sitemap.xml` | `https://noelfania.github.io/shotKey/sitemap.xml` |
 | `public/og-image.png` | `https://noelfania.github.io/shotKey/og-image.png` |
+| `public/google19a206f5b83a8f38.html` | `https://noelfania.github.io/shotKey/google19a206f5b83a8f38.html` (Search Console 소유권 확인, 삭제 금지) |
 
 ## Google Search Console (수동)
 
 1. 속성으로 `https://noelfania.github.io/shotKey/` 추가(또는 `github.io` 도메인 속성)
-2. 사이트맵 제출: `https://noelfania.github.io/shotKey/sitemap.xml`
-3. 배포 후 URL 검사로 `index.html` 메타·JSON-LD 확인
+2. HTML 파일 소유권 확인: `public/google19a206f5b83a8f38.html` 배포 후 Search Console에서 Verify
+3. 사이트맵 제출: `https://noelfania.github.io/shotKey/sitemap.xml`
+4. 배포 후 URL 검사로 `index.html` 메타·JSON-LD 확인
 
 ## 관련
 
