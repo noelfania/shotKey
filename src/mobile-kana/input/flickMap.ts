@@ -40,25 +40,25 @@ const katakanaFlickMap: Record<FlickKeyId, FlickCell> = {
 };
 
 /**
- * 패드 셀: 실키 / 투명 빈칸 / iOS 기능키 자리 스켈레톤 / 세로 2행 스켈레톤(Enter).
+ * 패드 셀: 실키 / 투명 빈칸 / iOS 기능키 스켈레톤 / Restart.
  * 스켈레톤은 입력 없음(장식만).
  */
 export type FlickPadCell =
   | FlickKeyId
   | null
   | "skeleton"
-  | "skeleton-tall";
+  | "restart";
 
 /**
- * FlickPad 그리드 (5열 × 4행).
- * 좌열·우열·탁음(^^) 자리는 iOS 불필요 키 스켈레톤. 우하단 Enter는 2행 span.
- * 마지막 행은 Enter span 때문에 4칸만 둔다.
+ * FlickPad 그리드 (5열 × 5행).
+ * 좌·우·탁음·최하단(Restart 제외)은 스켈레톤. 우하단이 Restart.
  */
 export const flickPadLayout: FlickPadCell[][] = [
   ["skeleton", "a", "ka", "sa", "skeleton"],
   ["skeleton", "ta", "na", "ha", "skeleton"],
-  ["skeleton", "ma", "ya", "ra", "skeleton-tall"],
-  ["skeleton", "skeleton", "wa", "punct"],
+  ["skeleton", "ma", "ya", "ra", "skeleton"],
+  ["skeleton", "skeleton", "wa", "punct", "skeleton"],
+  ["skeleton", "skeleton", "skeleton", "skeleton", "restart"],
 ];
 
 /**

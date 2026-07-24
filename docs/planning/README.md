@@ -4,3 +4,4 @@
 
 - [roadmap.md](roadmap.md) — 중기 방향
 - [backlog-ideas.md](backlog-ideas.md) — 구체적 아이디어
+- [known-issues.md](known-issues.md) — 알려진 미해결 이슈

@@ -8,6 +8,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.4.2] - 2026-07-24
+
+### Changed
+
+- Kana shell: top cluster (meta / controls / fixed-height challenge) and bottom dock (Most missed + flick pad); empty middle spacer
+- Flick pad 5×5: bottom row of skeleton keys; Restart on bottom-right single cell (former tall Restart is skeleton again)
+
+### Docs
+
+- Document open iOS/WebKit silent-or-flaky feedback audio as a known issue ([docs/planning/known-issues.md](docs/planning/known-issues.md))
+
 ## [1.4.1] - 2026-07-24
 
 ### Changed

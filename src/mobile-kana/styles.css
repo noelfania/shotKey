@@ -4,8 +4,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* 하단: 키 아래 여백(기존 26px의 2배) + home indicator */
-  padding: 8px 10px calc(52px + env(safe-area-inset-bottom, 0px));
+  /* 하단: home indicator만 (Most missed+키는 하단 도크) */
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   background: var(--app-bg, #f4f7fb);
   color: var(--strong-text, #142033);
@@ -48,9 +48,11 @@
   padding: 5px 8px;
 }
 
-/* 출제: 가변 여유(출제+하단 spacer)의 3/4 → 예전 출제 높이의 약 3/4 */
+/* 출제: 상단에 붙고 늘어나지 않음 (예전 여유 높이의 약 3/4) */
 .kana-challenge {
-  flex: 3 1 0;
+  flex: 0 0 34dvh;
+  height: 34dvh;
+  max-height: 34dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -59,11 +61,20 @@
   overflow: hidden;
 }
 
-/* 출제 축소분: 키 크기 유지한 채 패드 아래 여백으로 흡수 */
+/* 출제와 하단 도크 사이 빈 공간 */
 .kana-main-spacer {
   flex: 1 1 0;
   min-height: 0;
   pointer-events: none;
+}
+
+/* Most missed + 키패드: 화면 하단에 붙임 */
+.kana-bottom-dock {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
 }
 
 /* 취약 문자 랭킹: 출제와 키패드 사이 한 줄 + 말줄임 */
@@ -289,7 +300,7 @@
   align-self: stretch;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   gap: 6px;
   min-height: 0;
   min-width: 0;
@@ -348,23 +359,23 @@
   opacity: 0.45;
 }
 
-/* 우하단 tall: Restart (스켈레톤보다 읽히게) */
+/* 우하단: Restart (단일 칸, 스켈레톤보다 읽히게) */
 .kana-flick-key.is-restart {
-  grid-row: span 2;
   opacity: 0.78;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 4px;
+  padding: 4px 2px;
 }
 
 .kana-restart-label {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  letter-spacing: 0.12em;
-  font-size: 12px;
+  writing-mode: horizontal-tb;
+  text-align: center;
+  letter-spacing: 0.04em;
+  font-size: 10px;
   font-weight: 600;
+  line-height: 1.15;
   color: var(--strong-text, #142033);
 }
 

@@ -11,7 +11,7 @@ import "./styles.css";
 
 /**
  * 모바일 히라가나/카타카나 플릭 미니게임 셸.
- * BuildMeta → 컨트롤 → 출제 → Most missed → 플릭 패드(고정 높이) → 여백.
+ * 상단(메타·컨트롤·출제) 고정 / 중단 여백 / 하단 도크(Most missed·키).
  */
 export default function KanaApp() {
   const theme = useTheme();
@@ -48,18 +48,20 @@ export default function KanaApp() {
           gaugeFillStyle={session.gaugeFillStyle}
           setPromptRef={session.setPromptRef}
         />
-        <KanaMostMissed weakestCharacters={session.weakestCharacters} />
-        <FlickPad
-          script={session.script}
-          isInputLocked={() =>
-            session.isInputLocked() || !session.canAcceptInput()
-          }
-          characterRiskMap={session.characterRiskMap}
-          onCharacter={session.submitCharacter}
-          onRestart={session.restart}
-          onUnlockAudio={session.unlockAudio}
-        />
         <div class="kana-main-spacer" aria-hidden="true" />
+        <div class="kana-bottom-dock">
+          <KanaMostMissed weakestCharacters={session.weakestCharacters} />
+          <FlickPad
+            script={session.script}
+            isInputLocked={() =>
+              session.isInputLocked() || !session.canAcceptInput()
+            }
+            characterRiskMap={session.characterRiskMap}
+            onCharacter={session.submitCharacter}
+            onRestart={session.restart}
+            onUnlockAudio={session.unlockAudio}
+          />
+        </div>
       </div>
     </main>
   );

@@ -11,3 +11,7 @@ verified: 2026-07-21
 ## 문서
 
 - [ ] (예시) 새 아이디어는 이 bullet 형식으로 추가
+
+## 오디오
+
+- [ ] iOS/WebKit 효과음 안정화 — 상세: [known-issues.md](known-issues.md)

@@ -18,8 +18,7 @@ type FlickPadProps = {
 
 /**
  * 일본 10키 스타일 플릭 패드를 렌더링한다.
- * 좌·우 기능키 자리는 문자 없는 스켈레톤으로만 채운다.
- * 우하단 tall 스켈레톤은 Restart 버튼이다.
+ * 좌·우·하단 기능키 자리는 스켈레톤, 우하단은 Restart.
  */
 export function FlickPad(props: FlickPadProps) {
   const controller = createFlickPadController({
@@ -94,7 +93,7 @@ function PadCellView(props: PadCellViewProps) {
       <Match when={props.cell === null}>
         <div class="kana-flick-key is-spacer" aria-hidden="true" />
       </Match>
-      <Match when={props.cell === "skeleton-tall"}>
+      <Match when={props.cell === "restart"}>
         <button
           type="button"
           class="kana-flick-key is-restart"
