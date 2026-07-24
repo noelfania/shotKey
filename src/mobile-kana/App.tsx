@@ -46,7 +46,6 @@ export default function KanaApp() {
           isInputLocked={session.isInputLocked}
           gauge={session.gauge}
           gaugeFillStyle={session.gaugeFillStyle}
-          streak={session.streak}
           setPromptRef={session.setPromptRef}
         />
         <FlickPad

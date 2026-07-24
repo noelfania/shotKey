@@ -83,7 +83,6 @@ export function createKanaSession() {
   const [isInputLocked, setIsInputLocked] = createSignal(false);
   const [soundEnabled, setSoundEnabledState] = createSignal(true);
   const [gauge, setGauge] = createSignal(startingGauge);
-  const [streak, setStreak] = createSignal(0);
   const [hasStarted, setHasStarted] = createSignal(false);
   const [timeoutElapsedMs, setTimeoutElapsedMs] = createSignal<number | null>(
     null,
@@ -294,7 +293,6 @@ export function createKanaSession() {
       setGauge((currentGauge) =>
         Math.min(gaugeMax, currentGauge + reward.gaugeGain),
       );
-      setStreak((currentStreak) => currentStreak + 1);
       setFeedback(reward.feedback);
       if (soundEnabled()) {
         feedbackAudio.triggerAudioFeedback(
@@ -316,7 +314,6 @@ export function createKanaSession() {
       sessionStartedAt > 0 ? Date.now() - sessionStartedAt : 0;
 
     setGauge(nextGauge);
-    setStreak(0);
     setTimeoutElapsedMs(didTimeoutByMiss ? elapsedMs : null);
 
     if (didTimeoutByMiss) {
@@ -343,7 +340,6 @@ export function createKanaSession() {
   function restart() {
     clearLock();
     setGauge(startingGauge);
-    setStreak(0);
     setHasStarted(false);
     setTimeoutElapsedMs(null);
     sessionStartedAt = 0;
@@ -379,7 +375,6 @@ export function createKanaSession() {
         );
 
         if (nextGauge === 0 && currentGauge > 0) {
-          setStreak(0);
           const elapsedMs =
             sessionStartedAt > 0 ? Date.now() - sessionStartedAt : 0;
           applyTimeout(elapsedMs);
@@ -410,7 +405,6 @@ export function createKanaSession() {
     unlockAudio,
     gauge,
     gaugeFillStyle,
-    streak,
     hasStarted,
     canAcceptInput,
     setPromptRef,

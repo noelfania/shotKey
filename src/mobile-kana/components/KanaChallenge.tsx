@@ -10,7 +10,6 @@ type KanaChallengeProps = {
   isInputLocked: Accessor<boolean>;
   gauge: Accessor<number>;
   gaugeFillStyle: Accessor<JSX.CSSProperties>;
-  streak: Accessor<number>;
   setPromptRef: (el: HTMLElement | undefined) => void;
 };
 
@@ -42,13 +41,6 @@ export function KanaChallenge(props: KanaChallengeProps) {
     <section class="kana-challenge" aria-live="polite">
       <div class="kana-most-missed" title={mostMissedLabel()}>
         <span class="kana-most-missed-text">{mostMissedLabel()}</span>
-      </div>
-
-      <div class="kana-session-meta">
-        <span class="kana-session-meta-item">
-          <span class="kana-session-meta-key">Streak</span>
-          <strong>{props.streak()}</strong>
-        </span>
       </div>
 
       <div

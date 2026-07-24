@@ -95,31 +95,6 @@
     background-color 0.18s ease;
 }
 
-.kana-session-meta {
-  flex: 0 0 auto;
-  display: flex;
-  justify-content: flex-end;
-  padding: 0 4px;
-}
-
-.kana-session-meta-item {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--muted-text, #6b7a90);
-}
-
-.kana-session-meta-key {
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.kana-session-meta-item strong {
-  font-size: 14px;
-  color: var(--strong-text, #142033);
-}
-
 .kana-prompt.is-hit {
   border-color: rgba(109, 247, 193, 0.55);
 }
