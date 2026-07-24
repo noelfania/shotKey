@@ -126,9 +126,8 @@ export function createGameSession() {
   const [endlessModeEnabled, setEndlessModeEnabled] = createSignal(
     readStoredBoolean(endlessModeStorageKey, false),
   );
-  const [soundEnabled, setSoundEnabled] = createSignal(
-    readStoredBoolean(soundEnabledStorageKey, true),
-  );
+  const initialSoundEnabled = readStoredBoolean(soundEnabledStorageKey, true);
+  const [soundEnabled, setSoundEnabledState] = createSignal(initialSoundEnabled);
   const [visualEffectsEnabled, setVisualEffectsEnabled] = createSignal(
     readStoredBoolean(visualEffectsStorageKey, true),
   );
@@ -310,10 +309,16 @@ export function createGameSession() {
   });
 
   const feedbackAudio = createFeedbackAudio();
+  feedbackAudio.setSoundEnabled(initialSoundEnabled);
 
-  createEffect(() => {
-    feedbackAudio.setSoundEnabled(soundEnabled());
-  });
+  /**
+   * 효과음 on/off. 켤 때는 unlock + 확인음.
+   * @param enabled 효과음 사용 여부
+   */
+  const setSoundEnabled = (enabled: boolean) => {
+    setSoundEnabledState(enabled);
+    feedbackAudio.setSoundEnabled(enabled, { playChime: enabled });
+  };
 
   /**
    * 챌린지 카드 DOM 참조를 저장한다.

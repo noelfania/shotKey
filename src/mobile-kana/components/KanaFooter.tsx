@@ -5,7 +5,10 @@ type KanaFooterProps = {
   script: Accessor<KanaScript>;
   setScript: (script: KanaScript) => void;
   soundEnabled: Accessor<boolean>;
-  setSoundEnabled: (enabled: boolean) => void;
+  setSoundEnabled: (
+    enabled: boolean,
+    options?: { playChime?: boolean },
+  ) => void;
 };
 
 /**
@@ -46,7 +49,10 @@ export function KanaFooter(props: KanaFooterProps) {
             "kana-footer-button": true,
             "is-active": props.soundEnabled(),
           }}
-          onClick={() => props.setSoundEnabled(!props.soundEnabled())}
+          onClick={() => {
+            const next = !props.soundEnabled();
+            props.setSoundEnabled(next, { playChime: next });
+          }}
         >
           Sound
         </button>

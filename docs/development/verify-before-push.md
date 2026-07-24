@@ -26,9 +26,11 @@ npm run build
 
 ## 모바일 카나 변경 시
 
-- `?mode=kana` 모바일 뷰포트에서 스크롤 없음, 플릭 패드 하단 `33.333dvh` 유지
+- `?mode=kana` 모바일 뷰포트에서 스크롤 없음, 플릭 패드 하단 `33.333dvh` 고정(키 크기 유지)
+- 출제 문자 바로 아래 게이지, Most missed는 출제와 패드 사이
 - 히라가나/카타카나 통계가 각각의 storage 키에 저장·복원되는지 확인
 - `Most missed` 순서·비율과 플릭 패드 개별 글자 위험 색상 확인
+- Sound ON 확인음 / 플릭 HIT·MISS 효과음(iOS Web Audio unlock)
 - MISS 600ms 잠금 중 프롬프트 상·하 띠만 표시되고 문자는 가리지 않는지 확인
 - 현재 문자 중심 오차 ≤1px, 다음 3문자와 font-size 동일 확인
 

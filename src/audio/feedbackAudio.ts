@@ -5,8 +5,8 @@ const FEEDBACK_TONE_VOLUME = 1;
 
 /**
  * 효과음 재생 함수 묶음을 생성한다.
- * iOS/WebKit은 AudioContext가 suspended로 시작하므로,
- * 사용자 제스처에서 unlock하고 resume 완료 뒤에만 톤을 재생한다.
+ * iOS/WebKit은 AudioContext가 suspended/interrupted일 수 있으므로,
+ * 사용자 제스처에서 silent buffer unlock 후 resume하고 톤을 재생한다.
  * @returns AudioContext 준비, 톤 재생, 판정별 피드백 재생 함수
  */
 export function createFeedbackAudio() {
@@ -43,9 +43,25 @@ export function createFeedbackAudio() {
   }
 
   /**
-   * AudioContext를 준비하고 suspended면 resume이 끝날 때까지 기다린다.
+   * iOS unlock용 무음 버퍼를 한 번 재생한다.
+   * @param context 대상 AudioContext
+   */
+  function playSilentUnlockBuffer(context: AudioContext) {
+    try {
+      const buffer = context.createBuffer(1, 1, context.sampleRate || 22050);
+      const source = context.createBufferSource();
+      source.buffer = buffer;
+      source.connect(context.destination);
+      source.start(0);
+    } catch {
+      // unlock 실패해도 resume은 계속 시도
+    }
+  }
+
+  /**
+   * AudioContext를 준비하고 suspended/interrupted면 unlock·resume한다.
    * 호출은 가능하면 click/pointerdown 등 사용자 제스처 안에서 시작한다.
-   * @returns running에 가까운 context, 불가 시 null
+   * @returns 사용 가능한 context, 불가 시 null
    */
   async function ensureAudioContext(): Promise<AudioContext | null> {
     const context = getOrCreateAudioContext();
@@ -53,18 +69,27 @@ export function createFeedbackAudio() {
       return null;
     }
 
-    if (context.state === "suspended") {
+    if (context.state === "closed") {
+      audioContextRef.current = null;
+      return getOrCreateAudioContext();
+    }
+
+    if (
+      context.state === "suspended" ||
+      (context.state as string) === "interrupted"
+    ) {
       if (unlockPromise === null) {
-        unlockPromise = context
-          .resume()
-          .then(() => {
+        unlockPromise = (async () => {
+          try {
+            playSilentUnlockBuffer(context);
+            await context.resume();
+          } catch {
+            // resume 거부 시 다음 제스처에서 재시도
+          } finally {
             unlockPromise = null;
-            return audioContextRef.current;
-          })
-          .catch(() => {
-            unlockPromise = null;
-            return audioContextRef.current;
-          });
+          }
+          return audioContextRef.current;
+        })();
       }
       await unlockPromise;
     }
@@ -77,17 +102,6 @@ export function createFeedbackAudio() {
    */
   function unlockAudio() {
     void ensureAudioContext();
-  }
-
-  /**
-   * 효과음 사용 여부를 갱신한다. 켤 때는 iOS unlock도 시도한다.
-   * @param enabled 효과음 재생 여부
-   */
-  function setSoundEnabled(enabled: boolean) {
-    soundEnabled = enabled;
-    if (enabled) {
-      unlockAudio();
-    }
   }
 
   /**
@@ -169,11 +183,73 @@ export function createFeedbackAudio() {
 
     void (async () => {
       const context = await ensureAudioContext();
-      if (context === null || context.state !== "running") {
+      if (context === null || context.state === "closed") {
         return;
+      }
+      if (
+        context.state === "suspended" ||
+        (context.state as string) === "interrupted"
+      ) {
+        try {
+          playSilentUnlockBuffer(context);
+          await context.resume();
+        } catch {
+          return;
+        }
       }
       playFeedbackTone(context, tone);
     })();
+  }
+
+  /**
+   * Sound ON 제스처에서 unlock + 짧은 확인음을 재생한다.
+   */
+  function playEnableChime() {
+    void (async () => {
+      const context = await ensureAudioContext();
+      if (context === null || context.state === "closed") {
+        return;
+      }
+      if (
+        context.state === "suspended" ||
+        (context.state as string) === "interrupted"
+      ) {
+        try {
+          playSilentUnlockBuffer(context);
+          await context.resume();
+        } catch {
+          return;
+        }
+      }
+      playTone(
+        context,
+        880,
+        context.currentTime + 0.005,
+        0.06,
+        FEEDBACK_TONE_VOLUME,
+        "sine",
+      );
+    })();
+  }
+
+  /**
+   * 효과음 사용 여부를 갱신한다.
+   * @param enabled 효과음 재생 여부
+   * @param options.playChime Sound ON 제스처에서 확인음 재생 여부
+   */
+  function setSoundEnabled(
+    enabled: boolean,
+    options?: { playChime?: boolean },
+  ) {
+    soundEnabled = enabled;
+    if (!enabled) {
+      return;
+    }
+    if (options?.playChime) {
+      playEnableChime();
+      return;
+    }
+    unlockAudio();
   }
 
   /**

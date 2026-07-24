@@ -347,12 +347,16 @@ export function createKanaSession() {
   }
 
   /**
-   * 효과음 on/off. 켤 때는 iOS AudioContext unlock도 시도한다.
+   * 효과음 on/off. 켤 때는 iOS unlock(+ 확인음)을 시도한다.
    * @param enabled 효과음 사용 여부
+   * @param options.playChime 토글 제스처에서 확인음 재생
    */
-  function setSoundEnabled(enabled: boolean) {
+  function setSoundEnabled(
+    enabled: boolean,
+    options?: { playChime?: boolean },
+  ) {
     setSoundEnabledState(enabled);
-    feedbackAudio.setSoundEnabled(enabled);
+    feedbackAudio.setSoundEnabled(enabled, options);
   }
 
   /**

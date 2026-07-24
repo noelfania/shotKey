@@ -8,6 +8,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-07-24
+
+### Changed
+
+- Kana layout: shrink challenge area to ~3/4 of prior height; keep flick pad at fixed `33.333dvh`
+- Move Most missed bar between challenge and flick pad
+- Place focus gauge directly under challenge glyphs (full width)
+
+### Fixed
+
+- Stronger iOS Web Audio unlock (silent buffer + interrupted resume + Sound ON chime)
+
 ## [1.4.0] - 2026-07-24
 
 ### Added

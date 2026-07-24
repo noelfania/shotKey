@@ -5,12 +5,13 @@ import { useTheme } from "../hooks/useTheme";
 import { FlickPad } from "./components/FlickPad";
 import { KanaChallenge } from "./components/KanaChallenge";
 import { KanaFooter } from "./components/KanaFooter";
+import { KanaMostMissed } from "./components/KanaMostMissed";
 import { createKanaSession } from "./hooks/createKanaSession";
 import "./styles.css";
 
 /**
  * 모바일 히라가나/카타카나 플릭 미니게임 셸.
- * 상단: BuildMeta → 컨트롤, 하단 1/3: 플릭 패드. Restart는 우하단 tall 키.
+ * BuildMeta → 컨트롤 → 출제 → Most missed → 플릭 패드(고정 높이) → 여백.
  */
 export default function KanaApp() {
   const theme = useTheme();
@@ -40,7 +41,6 @@ export default function KanaApp() {
         <KanaChallenge
           character={() => session.challenge().character}
           upcoming={session.upcoming}
-          weakestCharacters={session.weakestCharacters}
           feedback={session.feedback}
           feedbackDetailAccent={session.feedbackDetailAccent}
           isInputLocked={session.isInputLocked}
@@ -48,6 +48,7 @@ export default function KanaApp() {
           gaugeFillStyle={session.gaugeFillStyle}
           setPromptRef={session.setPromptRef}
         />
+        <KanaMostMissed weakestCharacters={session.weakestCharacters} />
         <FlickPad
           script={session.script}
           isInputLocked={() =>
@@ -58,6 +59,7 @@ export default function KanaApp() {
           onRestart={session.restart}
           onUnlockAudio={session.unlockAudio}
         />
+        <div class="kana-main-spacer" aria-hidden="true" />
       </div>
     </main>
   );

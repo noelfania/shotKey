@@ -1,10 +1,9 @@
 import { For, Show, type Accessor, type JSX } from "solid-js";
-import type { KanaFeedback, KanaWeakCharacter } from "../game/types";
+import type { KanaFeedback } from "../game/types";
 
 type KanaChallengeProps = {
   character: Accessor<string>;
   upcoming: Accessor<string[]>;
-  weakestCharacters: Accessor<KanaWeakCharacter[]>;
   feedback: Accessor<KanaFeedback>;
   feedbackDetailAccent: Accessor<string | null>;
   isInputLocked: Accessor<boolean>;
@@ -14,22 +13,9 @@ type KanaChallengeProps = {
 };
 
 /**
- * 현재 출제 문자·취약 랭킹·게이지·피드백을 표시한다.
+ * 현재 출제 문자·게이지·피드백을 표시한다.
  */
 export function KanaChallenge(props: KanaChallengeProps) {
-  const mostMissedLabel = () => {
-    const ranking = props.weakestCharacters();
-    if (ranking.length === 0) {
-      return "Most missed --";
-    }
-    return `Most missed ${ranking
-      .map(
-        (item) =>
-          `${item.character} ${item.missRateLabel} ${item.sampleLabel}`,
-      )
-      .join(" · ")}`;
-  };
-
   const isMissTone = () =>
     props.feedback().tone === "miss" || props.isInputLocked();
   const isHitTone = () => {
@@ -39,10 +25,6 @@ export function KanaChallenge(props: KanaChallengeProps) {
 
   return (
     <section class="kana-challenge" aria-live="polite">
-      <div class="kana-most-missed" title={mostMissedLabel()}>
-        <span class="kana-most-missed-text">{mostMissedLabel()}</span>
-      </div>
-
       <div
         ref={(el) => props.setPromptRef(el)}
         classList={{
