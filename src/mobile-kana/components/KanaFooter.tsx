@@ -9,7 +9,7 @@ type KanaFooterProps = {
 };
 
 /**
- * 히라/카타 토글·사운드 (테마는 BuildMeta, Restart 없음).
+ * 히라/카타 토글·사운드 (테마는 BuildMeta, Restart는 플릭 패드 tall 키).
  */
 export function KanaFooter(props: KanaFooterProps) {
   return (

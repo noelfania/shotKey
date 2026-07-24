@@ -583,6 +583,9 @@ export function createGameSession() {
         return;
       }
 
+      // 키 입력 제스처에서 AudioContext unlock (iOS/WebKit)
+      feedbackAudio.unlockAudio();
+
       triggerTypedKeyFlash(getKeyboardEventKeyId(event.code));
 
       if (event.ctrlKey && event.key === "Enter") {

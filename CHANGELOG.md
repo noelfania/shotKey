@@ -8,6 +8,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-07-24
+
+### Added
+
+- Kana focus gauge (desktop-style decay, hit reward, MISS −15, TIME OUT)
+- Kana speed judgment (PERFECT / GOOD / OK) with matching audio and prompt animations
+- Kana Streak HUD and Restart on the bottom-right tall flick-pad key
+
+### Changed
+
+- Stronger per-glyph risk highlight on the kana flick pad (higher alpha cap and CSS tint)
+
+### Fixed
+
+- Mobile Web Audio unlock: resume AudioContext on Sound toggle / pointer / keydown so the first hit is not silent on iOS
+
+### Removed
+
+- Stale root `LICENSE` (Microsoft MIT boilerplate unrelated to ShotKey)
+
 ## [1.3.2] - 2026-07-22
 
 ### Added

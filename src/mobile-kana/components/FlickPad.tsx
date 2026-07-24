@@ -12,17 +12,21 @@ type FlickPadProps = {
   isInputLocked: Accessor<boolean>;
   characterRiskMap: Accessor<Record<string, number>>;
   onCharacter: (character: string) => void;
+  onRestart: () => void;
+  onUnlockAudio?: () => void;
 };
 
 /**
  * 일본 10키 스타일 플릭 패드를 렌더링한다.
  * 좌·우 기능키 자리는 문자 없는 스켈레톤으로만 채운다.
+ * 우하단 tall 스켈레톤은 Restart 버튼이다.
  */
 export function FlickPad(props: FlickPadProps) {
   const controller = createFlickPadController({
     getScript: () => props.script(),
     onCharacter: (character) => props.onCharacter(character),
     isLocked: () => props.isInputLocked(),
+    onUnlockAudio: () => props.onUnlockAudio?.(),
   });
 
   return (
@@ -40,6 +44,8 @@ export function FlickPad(props: FlickPadProps) {
                   cell={cell}
                   script={props.script}
                   characterRiskMap={props.characterRiskMap}
+                  onRestart={props.onRestart}
+                  onUnlockAudio={props.onUnlockAudio}
                   onPointerDown={(keyId, event) =>
                     controller.handlePointerDown(keyId, event)
                   }
@@ -59,13 +65,15 @@ type PadCellViewProps = {
   cell: FlickPadCell;
   script: Accessor<KanaScript>;
   characterRiskMap: Accessor<Record<string, number>>;
+  onRestart: () => void;
+  onUnlockAudio?: () => void;
   onPointerDown: (keyId: FlickKeyId, event: PointerEvent) => void;
   onPointerUp: (event: PointerEvent) => void;
   onPointerCancel: (event: PointerEvent) => void;
 };
 
 /**
- * 스켈레톤·스페이서·실키를 분기한다.
+ * 스켈레톤·Restart·실키를 분기한다.
  */
 function PadCellView(props: PadCellViewProps) {
   return (
@@ -86,10 +94,23 @@ function PadCellView(props: PadCellViewProps) {
       <Match when={props.cell === null}>
         <div class="kana-flick-key is-spacer" aria-hidden="true" />
       </Match>
-      <Match when={props.cell === "skeleton" || props.cell === "skeleton-tall"}>
+      <Match when={props.cell === "skeleton-tall"}>
+        <button
+          type="button"
+          class="kana-flick-key is-restart"
+          aria-label="Restart"
+          onPointerDown={(event) => {
+            event.preventDefault();
+            props.onUnlockAudio?.();
+          }}
+          onClick={() => props.onRestart()}
+        >
+          <span class="kana-restart-label">Restart</span>
+        </button>
+      </Match>
+      <Match when={props.cell === "skeleton"}>
         <div
           class="kana-flick-key is-skeleton"
-          classList={{ "is-skeleton-tall": props.cell === "skeleton-tall" }}
           aria-hidden="true"
         />
       </Match>
@@ -108,6 +129,8 @@ type FlickKeyProps = {
 
 /**
  * 글자별 위험도를 CSS 변수로 넘긴다.
+ * @param riskMap 문자→위험도 맵
+ * @param character 대상 문자
  */
 function riskStyle(
   riskMap: Record<string, number>,

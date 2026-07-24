@@ -57,7 +57,7 @@ function getSmoothedRate(
 }
 
 /**
- * 문자 위험도(0~0.72)를 계산한다.
+ * 문자 위험도(0~0.95)를 계산한다.
  */
 export function getKanaVisualRiskAlpha(stat?: KanaCharacterStat): number {
   if (!stat || stat.attempts === 0) {
@@ -88,7 +88,8 @@ export function getKanaVisualRiskAlpha(stat?: KanaCharacterStat): number {
   const rawAlpha =
     (totalMissRate * 0.42 + recentMissRate * 0.34 * recentWeight) *
     sampleWeight;
-  const earlyAlphaCap = stat.attempts < 5 ? 0.16 + stat.attempts * 0.03 : 0.72;
+  // 초기 샘플은 과한 빨강을 막고, 이후 상한은 0.95
+  const earlyAlphaCap = stat.attempts < 5 ? 0.21 + stat.attempts * 0.04 : 0.95;
   return Math.min(rawAlpha, earlyAlphaCap);
 }
 

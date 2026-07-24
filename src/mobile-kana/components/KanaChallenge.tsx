@@ -1,4 +1,4 @@
-import { For, Show, type Accessor } from "solid-js";
+import { For, Show, type Accessor, type JSX } from "solid-js";
 import type { KanaFeedback, KanaWeakCharacter } from "../game/types";
 
 type KanaChallengeProps = {
@@ -6,33 +6,18 @@ type KanaChallengeProps = {
   upcoming: Accessor<string[]>;
   weakestCharacters: Accessor<KanaWeakCharacter[]>;
   feedback: Accessor<KanaFeedback>;
+  feedbackDetailAccent: Accessor<string | null>;
   isInputLocked: Accessor<boolean>;
+  gauge: Accessor<number>;
+  gaugeFillStyle: Accessor<JSX.CSSProperties>;
+  streak: Accessor<number>;
+  setPromptRef: (el: HTMLElement | undefined) => void;
 };
 
 /**
- * 현재 출제 문자·취약 랭킹·피드백을 표시한다.
+ * 현재 출제 문자·취약 랭킹·게이지·피드백을 표시한다.
  */
 export function KanaChallenge(props: KanaChallengeProps) {
-  const statusLabel = () => {
-    if (props.isInputLocked() || props.feedback() === "miss") {
-      return "MISS";
-    }
-    if (props.feedback() === "hit") {
-      return "HIT";
-    }
-    return "READY";
-  };
-
-  const statusDetail = () => {
-    if (props.feedback() === "miss") {
-      return "Wrong kana — try again";
-    }
-    if (props.feedback() === "hit") {
-      return "Nice";
-    }
-    return "Flick or tap the matching kana";
-  };
-
   const mostMissedLabel = () => {
     const ranking = props.weakestCharacters();
     if (ranking.length === 0) {
@@ -46,17 +31,32 @@ export function KanaChallenge(props: KanaChallengeProps) {
       .join(" · ")}`;
   };
 
+  const isMissTone = () =>
+    props.feedback().tone === "miss" || props.isInputLocked();
+  const isHitTone = () => {
+    const tone = props.feedback().tone;
+    return tone === "perfect" || tone === "good" || tone === "ok";
+  };
+
   return (
     <section class="kana-challenge" aria-live="polite">
       <div class="kana-most-missed" title={mostMissedLabel()}>
         <span class="kana-most-missed-text">{mostMissedLabel()}</span>
       </div>
 
+      <div class="kana-session-meta">
+        <span class="kana-session-meta-item">
+          <span class="kana-session-meta-key">Streak</span>
+          <strong>{props.streak()}</strong>
+        </span>
+      </div>
+
       <div
+        ref={(el) => props.setPromptRef(el)}
         classList={{
           "kana-prompt": true,
-          "is-miss": props.feedback() === "miss",
-          "is-hit": props.feedback() === "hit",
+          "is-miss": isMissTone(),
+          "is-hit": isHitTone(),
           "is-locked": props.isInputLocked(),
         }}
       >
@@ -82,8 +82,25 @@ export function KanaChallenge(props: KanaChallengeProps) {
           </div>
         </div>
 
-        <p class="kana-status">{statusLabel()}</p>
-        <p class="kana-status-detail">{statusDetail()}</p>
+        <div
+          class="kana-inline-gauge"
+          aria-label={`Focus gauge ${Math.ceil(props.gauge())}%`}
+        >
+          <div class="gauge-track gauge-track-slim" aria-hidden="true">
+            <div class="gauge-fill" style={props.gaugeFillStyle()} />
+          </div>
+        </div>
+
+        <p class="kana-status">{props.feedback().label}</p>
+        <p class="kana-status-detail">
+          {props.feedback().detail}
+          <Show when={props.feedbackDetailAccent() !== null}>
+            {" "}
+            <span class="kana-status-accent">
+              {props.feedbackDetailAccent()}
+            </span>
+          </Show>
+        </p>
       </div>
     </section>
   );

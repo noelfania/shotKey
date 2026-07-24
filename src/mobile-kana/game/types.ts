@@ -19,7 +19,20 @@ export type KanaChallenge = {
   character: string;
 };
 
-export type KanaFeedback = "ready" | "hit" | "miss";
+export type KanaFeedbackTone =
+  | "ready"
+  | "perfect"
+  | "good"
+  | "ok"
+  | "miss"
+  | "timeout"
+  | "gameover";
+
+export type KanaFeedback = {
+  label: string;
+  tone: KanaFeedbackTone;
+  detail: string;
+};
 
 export type KanaRecentOutcome = "hit" | "miss";
 

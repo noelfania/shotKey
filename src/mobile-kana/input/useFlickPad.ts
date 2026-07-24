@@ -15,6 +15,8 @@ type UseFlickPadOptions = {
   getScript: () => KanaScript;
   onCharacter: (character: string) => void;
   isLocked: () => boolean;
+  /** iOS 등에서 오디오 잠금 해제 (pointerdown 제스처) */
+  onUnlockAudio?: () => void;
 };
 
 /**
@@ -44,6 +46,9 @@ export function createFlickPadController(options: UseFlickPadOptions) {
     keyId: FlickKeyId,
     event: PointerEvent,
   ): void {
+    // 잠금 중이어도 제스처로 오디오 unlock은 허용
+    options.onUnlockAudio?.();
+
     if (options.isLocked()) {
       return;
     }

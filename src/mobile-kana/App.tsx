@@ -10,7 +10,7 @@ import "./styles.css";
 
 /**
  * 모바일 히라가나/카타카나 플릭 미니게임 셸.
- * 상단: BuildMeta → 컨트롤, 하단 1/3: 플릭 패드. Restart 없음.
+ * 상단: BuildMeta → 컨트롤, 하단 1/3: 플릭 패드. Restart는 우하단 tall 키.
  */
 export default function KanaApp() {
   const theme = useTheme();
@@ -42,13 +42,22 @@ export default function KanaApp() {
           upcoming={session.upcoming}
           weakestCharacters={session.weakestCharacters}
           feedback={session.feedback}
+          feedbackDetailAccent={session.feedbackDetailAccent}
           isInputLocked={session.isInputLocked}
+          gauge={session.gauge}
+          gaugeFillStyle={session.gaugeFillStyle}
+          streak={session.streak}
+          setPromptRef={session.setPromptRef}
         />
         <FlickPad
           script={session.script}
-          isInputLocked={session.isInputLocked}
+          isInputLocked={() =>
+            session.isInputLocked() || !session.canAcceptInput()
+          }
           characterRiskMap={session.characterRiskMap}
           onCharacter={session.submitCharacter}
+          onRestart={session.restart}
+          onUnlockAudio={session.unlockAudio}
         />
       </div>
     </main>
